@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axton Enterprises — Pricing</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a0f1e;
+    --navy-mid: #111827;
+    --navy-card: #131c2e;
+    --navy-border: #1e2d47;
+    --blue: #1a6fff;
+    --blue-bright: #2d7fff;
+    --blue-light: #4e9bff;
+    --blue-glow: rgba(26,111,255,0.18);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.7);
+    --white-faint: rgba(255,255,255,0.12);
+    --gold: #f0c040;
+  }
+
+  html, body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--navy);
+    border-bottom: 1px solid var(--navy-border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-icon {
+    width: 52px;
+    height: 52px;
+    position: relative;
+    flex-shrink: 0;
+  }
+
+  .logo-icon svg { width: 100%; height: 100%; }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .logo-text .brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 0.06em;
+    color: var(--white);
+  }
+
+  .logo-text .sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--blue-light);
+    margin-top: 2px;
+  }
+
+  .header-tagline {
+    text-align: right;
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+
+  .header-tagline .line1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--white);
+    text-transform: uppercase;
+  }
+
+  .header-tagline .line2 {
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--blue);
+    text-transform: uppercase;
+  }
+
+  .header-tagline .line3 {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--white-dim);
+    margin-top: 3px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 64px 24px 40px;
+  }
+
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .hero h1 span { color: var(--blue); }
+
+  .hero p {
+    margin-top: 14px;
+    font-size: 16px;
+    color: var(--white-dim);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── CAROUSEL ── */
+  .carousel-section {
+    padding: 0 0 60px;
+    position: relative;
+  }
+
+  .carousel-track-wrap {
+    overflow: hidden;
+    padding: 32px 0 40px;
+  }
+
+  .carousel-track {
+    display: flex;
+    gap: 28px;
+    padding: 0 24px;
+    transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
+    align-items: stretch;
+  }
+
+  /* ── CARD ── */
+  .plan-card {
+    flex: 0 0 400px;
+    background: var(--navy-card);
+    border: 1px solid var(--navy-border);
+    border-radius: 16px;
+    padding: 36px 32px 32px;
+    cursor: pointer;
+    transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease, opacity 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0.5;
+    transform: scale(0.92);
+    user-select: none;
+  }
+
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--blue-glow) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    border-radius: 16px;
+  }
+
+  .plan-card.active {
+    opacity: 1;
+    transform: scale(1);
+    border-color: var(--blue);
+    box-shadow: 0 0 0 1px var(--blue), 0 24px 64px rgba(26,111,255,0.22), 0 8px 24px rgba(0,0,0,0.6);
+  }
+
+  .plan-card.active::before { opacity: 1; }
+
+  .plan-card.popular-card {
+    border-color: var(--blue-bright);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: 0;
+    right: 28px;
+    background: var(--blue);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 6px 10px 18px;
+    clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+    line-height: 1.2;
+    text-align: center;
+  }
+
+  .card-header { margin-bottom: 24px; }
+
+  .plan-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 2px;
+  }
+
+  .plan-subtitle {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--white-dim);
+    letter-spacing: 0.04em;
+  }
+
+  .price-block {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    margin: 20px 0 6px;
+  }
+
+  .price-dollar {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+
+  .price-amount {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 72px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .price-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 8px;
+  }
+
+  .monthly-price {
+    font-size: 14px;
+    color: var(--white-dim);
+    margin-bottom: 4px;
+  }
+
+  .monthly-price strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .monthly-orig {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--navy-border);
+    margin: 24px 0;
+  }
+
+  /* Features list */
+  .features-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .feature-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .feature-icon {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+
+  .feature-icon.yes {
+    background: var(--blue);
+  }
+
+  .feature-icon.no {
+    background: var(--white-faint);
+  }
+
+  .feature-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .feature-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.01em;
+  }
+
+  .feature-text span {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.4;
+  }
+
+  .card-cta {
+    margin-top: 28px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 0;
+    width: 100%;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .card-cta:hover {
+    background: var(--blue-bright);
+    transform: translateY(-1px);
+  }
+
+  .card-tagline {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--white-dim);
+    text-align: center;
+    font-style: italic;
+    line-height: 1.4;
+  }
+
+  /* ── DOTS ── */
+  .carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 8px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--white-faint);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border: none;
+  }
+
+  .dot.active {
+    background: var(--blue);
+    transform: scale(1.3);
+  }
+
+  /* ── NAV ARROWS ── */
+  .carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .nav-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--navy-border);
+    background: var(--navy-card);
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .nav-btn:hover {
+    border-color: var(--blue);
+    background: var(--blue-glow);
+  }
+
+  .nav-btn svg { width: 20px; height: 20px; }
+
+  /* ── BOTTOM STRIP ── */
+  .bottom-strip {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--navy-border);
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1.4fr auto;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .strip-section h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 10px;
+  }
+
+  .strip-section p {
+    font-size: 14px;
+    color: var(--white-dim);
+    line-height: 1.6;
+  }
+
+  .strip-section p strong { color: var(--white); }
+
+  .advantage-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .advantage-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--white-dim);
+  }
+
+  .advantage-list li::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: var(--blue);
+    border-radius: 50%;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-size: 11px;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+  }
+
+  .strip-logo {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .strip-logo .domain {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+  }
+
+  /* ── FOOTER BAR ── */
+  .footer-bar {
+    background: var(--navy);
+    border-top: 1px solid var(--navy-border);
+    padding: 20px 48px;
+    display: flex;
+    justify-content: center;
+    gap: 64px;
+  }
+
+  .footer-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+  }
+
+  .footer-item svg {
+    width: 18px;
+    height: 18px;
+    color: var(--blue);
+    flex-shrink: 0;
+  }
+
+  /* ── DRAG HINT ── */
+  .drag-hint {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    margin-bottom: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header { padding: 0 20px; }
+    .header-tagline .line3 { display: none; }
+    .plan-card { flex: 0 0 min(320px, calc(100vw - 48px)); }
+    .carousel-track { padding: 0 24px; }
+    .bottom-strip { grid-template-columns: 1fr; padding: 32px 24px; }
+    .strip-logo { align-items: flex-start; }
+    .footer-bar { flex-direction: column; align-items: center; gap: 16px; padding: 20px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Axton Enterprises Logo">
+        <rect width="52" height="52" rx="7" fill="#05070d"/>
+        <path d="M7 41L18.5 11H26L37.5 41H30.5L27.8 33H17L14.3 41H7Z" fill="#ffffff"/>
+        <path d="M18.8 27H26L22.4 16.8L18.8 27Z" fill="#05070d"/>
+        <path d="M30 12H45V18H30V12Z" fill="#1a6fff"/>
+        <path d="M30 23H42.5V29H30V23Z" fill="#1a6fff"/>
+        <path d="M30 35H45V41H30V35Z" fill="#1a6fff"/>
+        <path d="M6 45L46 7" stroke="#2d7fff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M10 45H43" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="brand">AXTON</span>
+      <span class="sub">ENTERPRISES</span>
+    </div>
+  </div>
+  <div class="header-tagline">
+    <div class="line1">Professional Websites.</div>
+    <div class="line2">Real Results.</div>
+    <div class="line3">Built for Local Businesses. Priced for Growth.</div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>Simple Pricing for <span>Growing Businesses</span></h1>
+  <p>Professional websites, automation, and online tools designed to help local businesses attract more customers.</p>
+</div>
+
+<!-- CAROUSEL -->
+<section class="carousel-section">
+  <p class="drag-hint">← swipe or click to explore →</p>
+  <div class="carousel-track-wrap" id="trackWrap">
+    <div class="carousel-track" id="track">
+
+      <!-- STARTER -->
+      <div class="plan-card" data-index="0" onclick="goTo(0)">
+        <div class="card-header">
+          <div class="plan-name">Starter</div>
+          <div class="plan-subtitle">Basic Website</div>
+          <div class="price-block">
+            <span class="price-dollar">$</span>
+            <span class="price-amount">500</span>
+          </div>
+          <div class="price-label">One-Time Setup</div>
+          <div class="monthly-price"><strong>$49</strong> /month</div>
+          <div class="monthly-orig">Website Hosting Included</div>
+        </div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Professional Website</strong><span>Clean, mobile-responsive website built for your business</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Mobile Responsive Design</strong><span>Designed to look good on phones, tablets, and desktops</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>SSL Security</strong><span>Secure HTTPS connection for customer trust</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Contact Form</strong><span>Simple lead form so customers can reach you</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Basic SEO</strong><span>Search-friendly page titles, descriptions, and structure</span></div></li>
+          <li class="feature-row"><span class="feature-icon no"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg></span><div class="feature-text"><strong style="color:rgba(255,255,255,0.3)">Business Email</strong><span>Available as an add-on or included in Growth+</span></div></li>
+        </ul>
+        <button class="card-cta">Get Started</button>
+        <div class="card-tagline">Perfect for businesses that need a strong online presence.</div>
+      </div>
+
+      <!-- GROWTH -->
+      <div class="plan-card popular-card" data-index="1" onclick="goTo(1)">
+        <div class="popular-badge">Most<br>Popular</div>
+        <div class="card-header">
+          <div class="plan-name">Growth</div>
+          <div class="plan-subtitle">Website + Growth Tools</div>
+          <div class="price-block">
+            <span class="price-dollar">$</span>
+            <span class="price-amount">750</span>
+          </div>
+          <div class="price-label">One-Time Setup</div>
+          <div class="monthly-price"><strong>$79</strong> /month</div>
+          <div class="monthly-orig">most popular package</div>
+        </div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Everything in Starter</strong><span>Professional website, hosting, SSL, contact form, and basic SEO</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Google Business Profile Optimization</strong><span>Improve your local presence on Google Search and Maps</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Analytics Dashboard</strong><span>Track website visits, customer activity, and performance</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Business Email Setup</strong><span>Setup for 1 professional business email account</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Enhanced SEO</strong><span>Improved local keywords, page structure, and search visibility</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Priority Support</strong><span>Faster help for updates, fixes, and small changes</span></div></li>
+        </ul>
+        <button class="card-cta">Get Started</button>
+        <div class="card-tagline">Best fit for most local businesses that want to get found and grow.</div>
+      </div>
+
+      <!-- PROFESSIONAL -->
+      <div class="plan-card" data-index="2" onclick="goTo(2)">
+        <div class="card-header">
+          <div class="plan-name">Professional</div>
+          <div class="plan-subtitle">Booking + Automation</div>
+          <div class="price-block">
+            <span class="price-dollar">$</span>
+            <span class="price-amount">1,250</span>
+          </div>
+          <div class="price-label">One-Time Setup</div>
+          <div class="monthly-price"><strong>$99</strong> /month</div>
+          <div class="monthly-orig">built for service businesses</div>
+        </div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Everything in Growth</strong><span>Includes website, SEO, analytics, GBP optimization, and email setup</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Appointment Scheduling</strong><span>Booking setup for salons, service providers, and local offices</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Workflow Automations</strong><span>Automated lead routing, notifications, and follow-up workflows</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Up to 3 Business Email Accounts</strong><span>Professional email setup for a small team</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Lead Capture Enhancements</strong><span>Better forms, calls-to-action, and conversion-focused sections</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Advanced Analytics</strong><span>More useful reporting for traffic, calls, leads, and conversions</span></div></li>
+        </ul>
+        <button class="card-cta">Get Started</button>
+        <div class="card-tagline">For businesses that need booking, automation, and better lead flow.</div>
+      </div>
+
+      <!-- COMMERCE -->
+      <div class="plan-card" data-index="3" onclick="goTo(3)">
+        <div class="card-header">
+          <div class="plan-name">Commerce</div>
+          <div class="plan-subtitle">E-Commerce + Inventory</div>
+          <div class="price-block">
+            <span class="price-dollar">$</span>
+            <span class="price-amount">1,750</span>
+          </div>
+          <div class="price-label">One-Time Setup</div>
+          <div class="monthly-price"><strong>$129</strong> /month</div>
+          <div class="monthly-orig">online sales package</div>
+        </div>
+        <div class="divider"></div>
+        <ul class="features-list">
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Everything in Professional</strong><span>Includes booking, automations, analytics, SEO, and up to 3 email accounts</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>E-Commerce Store</strong><span>Online storefront for products, services, orders, and checkout</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Inventory Integration</strong><span>Connect product listings and inventory workflows where supported</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Payment Processing Setup</strong><span>Setup for online payments through Stripe, Square, or supported processors</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Product Management</strong><span>Initial product structure, categories, and store organization</span></div></li>
+          <li class="feature-row"><span class="feature-icon yes"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><div class="feature-text"><strong>Up to 5 Business Email Accounts</strong><span>Professional email setup for growing teams</span></div></li>
+        </ul>
+        <button class="card-cta">Get Started</button>
+        <div class="card-tagline">For businesses ready to sell online and manage growth.</div>
+      </div>
+
+    </div><!-- /track -->
+  </div><!-- /track-wrap -->
+
+  <!-- Dots -->
+  <div class="carousel-dots" id="dots">
+    <button class="dot" onclick="goTo(0)"></button>
+    <button class="dot" onclick="goTo(1)"></button>
+    <button class="dot" onclick="goTo(2)"></button>
+    <button class="dot" onclick="goTo(3)"></button>
+  </div>
+
+  <!-- Nav arrows -->
+  <div class="carousel-nav">
+    <button class="nav-btn" onclick="prev()" aria-label="Previous">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="nav-btn" onclick="next()" aria-label="Next">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+</section>
+
+<!-- BOTTOM STRIP -->
+<div class="bottom-strip">
+  <div class="strip-section">
+    <div style="display:flex;align-items:flex-start;gap:16px;">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" style="flex-shrink:0;margin-top:2px">
+        <circle cx="22" cy="22" r="21" stroke="#1a6fff" stroke-width="1.5"/>
+        <polyline points="30 16 19 27 14 22" stroke="#1a6fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div>
+        <h3>Optional Add-Ons</h3>
+        <p><strong>Additional Email Accounts:</strong> $5/mo each<br><strong>Logo Design:</strong> $150<br><strong>Additional Website Pages:</strong> $75/page<br><strong>Blog Setup:</strong> $100<br><strong>Product Uploads:</strong> Custom Quote</p>
+      </div>
+    </div>
+  </div>
+  <div class="strip-section">
+    <h3>Axton Advantage</h3>
+    <ul class="advantage-list">
+      <li>Business email is included starting with the Growth package.</li>
+      <li>Starter stays lean for businesses that only need a website.</li>
+      <li>Transparent pricing. No long-term contracts.</li>
+    </ul>
+  </div>
+  <div class="strip-logo">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Axton Enterprises Logo">
+          <rect width="52" height="52" rx="7" fill="#05070d"/>
+          <path d="M7 41L18.5 11H26L37.5 41H30.5L27.8 33H17L14.3 41H7Z" fill="#ffffff"/>
+          <path d="M18.8 27H26L22.4 16.8L18.8 27Z" fill="#05070d"/>
+          <path d="M30 12H45V18H30V12Z" fill="#1a6fff"/>
+          <path d="M30 23H42.5V29H30V23Z" fill="#1a6fff"/>
+          <path d="M30 35H45V41H30V35Z" fill="#1a6fff"/>
+          <path d="M6 45L46 7" stroke="#2d7fff" stroke-width="3" stroke-linecap="round"/>
+          <path d="M10 45H43" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+      </svg>
+      </div>
+      <div class="logo-text">
+        <span class="brand">AXTON</span>
+        <span class="sub">ENTERPRISES</span>
+      </div>
+    </div>
+    <div class="domain">axton.enterprises</div>
+  </div>
+</div>
+
+<!-- FOOTER BAR -->
+<div class="footer-bar">
+  <div class="footer-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+    One-Time Setup Fees
+  </div>
+  <div class="footer-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    No Long-Term Contracts
+  </div>
+  <div class="footer-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Cancel Anytime
+  </div>
+</div>
+
+<script>
+  const TOTAL = 4;
+  let current = 1; // start on Growth (most popular)
+  let isDragging = false;
+  let startX = 0;
+  let dragOffset = 0;
+
+  const trackWrap = document.getElementById('trackWrap');
+  const track = document.getElementById('track');
+  const cards = document.querySelectorAll('.plan-card');
+  const dots = document.querySelectorAll('.dot');
+
+  function getCenteredOffset(index) {
+    const card = cards[index];
+    const wrapCenter = trackWrap.clientWidth / 2;
+    const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+    return wrapCenter - cardCenter;
+  }
+
+  function goTo(index, skipAnim) {
+    current = Math.max(0, Math.min(TOTAL - 1, index));
+    track.style.transition = skipAnim
+      ? 'none'
+      : 'transform 0.55s cubic-bezier(0.25,0.46,0.45,0.94)';
+
+    const offset = getCenteredOffset(current);
+    track.style.transform = `translateX(${offset}px)`;
+
+    cards.forEach((c, i) => {
+      c.classList.toggle('active', i === current);
+    });
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function next() { goTo(current + 1); }
+  function prev() { goTo(current - 1); }
+
+  // Drag / touch support
+  function onDragStart(e) {
+    isDragging = true;
+    startX = e.type === 'touchstart' ? e.touches[0].clientX : e.clientX;
+    track.style.transition = 'none';
+  }
+
+  function onDragMove(e) {
+    if (!isDragging) return;
+    const x = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX;
+    dragOffset = x - startX;
+    const base = getCenteredOffset(current);
+    track.style.transform = `translateX(${base + dragOffset}px)`;
+  }
+
+  function onDragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    if (dragOffset < -60) goTo(current + 1);
+    else if (dragOffset > 60) goTo(current - 1);
+    else goTo(current);
+    dragOffset = 0;
+  }
+
+  track.addEventListener('mousedown', onDragStart);
+  window.addEventListener('mousemove', onDragMove);
+  window.addEventListener('mouseup', onDragEnd);
+  track.addEventListener('touchstart', onDragStart, { passive: true });
+  window.addEventListener('touchmove', onDragMove, { passive: true });
+  window.addEventListener('touchend', onDragEnd);
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowLeft') prev();
+    if (e.key === 'ArrowRight') next();
+  });
+
+  window.addEventListener('resize', () => goTo(current, true));
+
+  // Init after layout is ready so the highlighted card centers correctly.
+  requestAnimationFrame(() => goTo(current, true));
+</script>
+</body>
+</html>
