@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Axton Enterprises — Plan Checkout</title>
+<meta name="description" content="Choose an Axton Enterprises website plan, review the service agreement, and begin your project checkout.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a0f1e;
+    --navy-mid: #111827;
+    --navy-card: #131c2e;
+    --navy-card-2: #172239;
+    --navy-border: #1e2d47;
+    --blue: #1a6fff;
+    --blue-bright: #2d7fff;
+    --blue-light: #4e9bff;
+    --blue-glow: rgba(26,111,255,0.18);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.72);
+    --white-soft: rgba(255,255,255,0.55);
+    --white-faint: rgba(255,255,255,0.12);
+    --green: #37d67a;
+    --danger: #ff6b6b;
+  }
+
+  html, body {
+    background: radial-gradient(circle at top, rgba(26,111,255,0.14), transparent 36%), var(--navy);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  header {
+    background: rgba(10,15,30,0.92);
+    border-bottom: 1px solid var(--navy-border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo { display: flex; align-items: center; gap: 14px; }
+  .logo-icon { width: 52px; height: 52px; flex-shrink: 0; }
+  .logo-icon svg { width: 100%; height: 100%; }
+  .logo-text { display: flex; flex-direction: column; line-height: 1; }
+  .logo-text .brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    letter-spacing: 0.06em;
+  }
+  .logo-text .sub {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    color: var(--blue-light);
+    margin-top: 2px;
+  }
+
+  .header-link {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    border: 1px solid var(--navy-border);
+    border-radius: 999px;
+    padding: 10px 16px;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .header-link:hover { border-color: var(--blue); color: var(--white); background: var(--blue-glow); }
+
+  .hero { text-align: center; padding: 64px 24px 34px; }
+  .eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: .95;
+  }
+  .hero h1 span { color: var(--blue); }
+  .hero p {
+    margin: 16px auto 0;
+    max-width: 740px;
+    color: var(--white-dim);
+    font-size: 17px;
+    line-height: 1.55;
+    font-weight: 300;
+  }
+
+  .checkout-wrap {
+    width: min(1180px, calc(100vw - 40px));
+    margin: 0 auto 70px;
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    gap: 28px;
+    align-items: start;
+  }
+
+  .panel {
+    background: linear-gradient(180deg, rgba(255,255,255,.035), rgba(255,255,255,.012)), var(--navy-card);
+    border: 1px solid var(--navy-border);
+    border-radius: 18px;
+    box-shadow: 0 18px 52px rgba(0,0,0,.35);
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 26px 28px;
+    border-bottom: 1px solid var(--navy-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .panel-header h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .step-pill {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    background: rgba(26,111,255,.10);
+    border: 1px solid rgba(26,111,255,.35);
+    border-radius: 999px;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .panel-body { padding: 28px; }
+
+  .plan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .plan-option {
+    border: 1px solid var(--navy-border);
+    background: rgba(255,255,255,.025);
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color .2s, box-shadow .2s, transform .15s, background .2s;
+    min-height: 170px;
+    position: relative;
+  }
+  .plan-option:hover { border-color: var(--blue-light); transform: translateY(-1px); }
+  .plan-option.active {
+    border-color: var(--blue);
+    background: rgba(26,111,255,.10);
+    box-shadow: 0 0 0 1px var(--blue), 0 16px 36px rgba(26,111,255,.14);
+  }
+  .popular-badge {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: var(--blue);
+    border-radius: 999px;
+    padding: 5px 8px;
+  }
+  .plan-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    color: var(--blue-light);
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding-right: 100px;
+  }
+  .plan-sub { color: var(--white-soft); font-size: 13px; margin-top: 2px; }
+  .price-line { margin-top: 14px; display: flex; align-items: baseline; gap: 8px; }
+  .setup-price { font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 900; }
+  .monthly-price { color: var(--white-dim); font-size: 14px; }
+  .included { color: var(--white-soft); font-size: 13px; line-height: 1.4; margin-top: 10px; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 28px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 7px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+  }
+  input, textarea, select {
+    width: 100%;
+    background: rgba(255,255,255,.045);
+    border: 1px solid var(--navy-border);
+    border-radius: 10px;
+    padding: 13px 14px;
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  select option { color: #111; }
+  textarea { min-height: 112px; resize: vertical; }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(26,111,255,.16);
+  }
+  ::placeholder { color: rgba(255,255,255,.32); }
+
+  .agreement-box {
+    max-height: 330px;
+    overflow-y: auto;
+    border: 1px solid var(--navy-border);
+    background: rgba(0,0,0,.18);
+    border-radius: 12px;
+    padding: 20px;
+    color: var(--white-dim);
+    line-height: 1.55;
+    font-size: 13.5px;
+  }
+  .agreement-box h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px;
+    color: var(--white);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .agreement-box h4 {
+    color: var(--blue-light);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin: 16px 0 6px;
+  }
+  .agreement-box ul { padding-left: 18px; }
+  .agreement-box li { margin: 5px 0; }
+
+  .check-row {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-top: 18px;
+    color: var(--white-dim);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .check-row input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--blue); flex-shrink: 0; }
+
+  .summary-card { position: sticky; top: 104px; }
+  .selected-plan-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--blue-light);
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .summary-sub { color: var(--white-soft); margin-top: 2px; }
+  .summary-prices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 22px 0;
+  }
+  .price-box {
+    border: 1px solid var(--navy-border);
+    border-radius: 12px;
+    padding: 16px;
+    background: rgba(255,255,255,.025);
+  }
+  .price-box span {
+    display: block;
+    color: var(--white-soft);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    margin-bottom: 5px;
+  }
+  .price-box strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px;
+    line-height: 1;
+  }
+  .summary-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin: 22px 0;
+  }
+  .summary-list li {
+    display: flex;
+    gap: 10px;
+    color: var(--white-dim);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  .summary-list li::before {
+    content: '';
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--blue);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");
+    background-size: 11px;
+    background-position: center;
+    background-repeat: no-repeat;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .notice {
+    background: rgba(26,111,255,.09);
+    border: 1px solid rgba(26,111,255,.25);
+    border-radius: 12px;
+    padding: 14px;
+    color: var(--white-dim);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .checkout-btn {
+    margin-top: 18px;
+    width: 100%;
+    border: none;
+    background: var(--blue);
+    color: #fff;
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, transform .15s, opacity .2s;
+  }
+  .checkout-btn:hover { background: var(--blue-bright); transform: translateY(-1px); }
+  .checkout-btn:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+  .small-note { color: var(--white-soft); font-size: 12px; line-height: 1.45; margin-top: 12px; text-align: center; }
+  .status-msg { margin-top: 12px; color: var(--green); font-size: 13px; line-height: 1.4; display: none; }
+  .status-msg.error { color: var(--danger); }
+
+  footer {
+    border-top: 1px solid var(--navy-border);
+    background: var(--navy-mid);
+    padding: 26px 24px;
+    text-align: center;
+    color: var(--white-soft);
+    font-size: 13px;
+  }
+
+  @media (max-width: 920px) {
+    header { padding: 0 20px; }
+    .header-link { display: none; }
+    .checkout-wrap { grid-template-columns: 1fr; }
+    .summary-card { position: static; }
+  }
+  @media (max-width: 640px) {
+    .hero { padding-top: 44px; }
+    .plan-grid, .form-grid, .summary-prices { grid-template-columns: 1fr; }
+    .panel-header { align-items: flex-start; flex-direction: column; }
+    .logo-text .brand { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="index.html" aria-label="Axton Enterprises Home">
+    <div class="logo-icon">
+      <svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Axton Enterprises Logo">
+        <rect width="52" height="52" rx="7" fill="#05070d"/>
+        <path d="M7 41L18.5 11H26L37.5 41H30.5L27.8 33H17L14.3 41H7Z" fill="#ffffff"/>
+        <path d="M18.8 27H26L22.4 16.8L18.8 27Z" fill="#05070d"/>
+        <path d="M30 12H45V18H30V12Z" fill="#1a6fff"/>
+        <path d="M30 23H42.5V29H30V23Z" fill="#1a6fff"/>
+        <path d="M30 35H45V41H30V35Z" fill="#1a6fff"/>
+        <path d="M6 45L46 7" stroke="#2d7fff" stroke-width="3" stroke-linecap="round"/>
+        <path d="M10 45H43" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="brand">AXTON</span>
+      <span class="sub">ENTERPRISES</span>
+    </div>
+  </a>
+  <a class="header-link" href="pricing.html">Back to Pricing</a>
+</header>
+
+<section class="hero">
+  <div class="eyebrow">Start Your Project</div>
+  <h1>Choose Your <span>Plan</span></h1>
+  <p>Select a package, provide your project details, review the service agreement, and continue to checkout. Your setup fee includes an initial consultation and up to 2 rounds of revisions.</p>
+</section>
+
+<main class="checkout-wrap">
+  <section class="panel">
+    <div class="panel-header">
+      <h2>Project Checkout</h2>
+      <div class="step-pill">Plan + Agreement</div>
+    </div>
+    <div class="panel-body">
+      <div class="plan-grid" id="planGrid">
+        <div class="plan-option" data-plan="starter" tabindex="0" role="button" aria-label="Select Starter plan">
+          <div class="plan-name">Starter</div>
+          <div class="plan-sub">Basic Website</div>
+          <div class="price-line"><div class="setup-price">$500</div><div class="monthly-price">+ $49/mo</div></div>
+          <div class="included">Website, hosting, SSL, contact form, and basic SEO.</div>
+        </div>
+        <div class="plan-option active" data-plan="growth" tabindex="0" role="button" aria-label="Select Growth plan">
+          <div class="popular-badge">Most Popular</div>
+          <div class="plan-name">Growth</div>
+          <div class="plan-sub">Website + Growth Tools</div>
+          <div class="price-line"><div class="setup-price">$750</div><div class="monthly-price">+ $79/mo</div></div>
+          <div class="included">Starter plus Google Business Profile, analytics, enhanced SEO, and 1 business email setup.</div>
+        </div>
+        <div class="plan-option" data-plan="professional" tabindex="0" role="button" aria-label="Select Professional plan">
+          <div class="plan-name">Professional</div>
+          <div class="plan-sub">Booking + Automation</div>
+          <div class="price-line"><div class="setup-price">$1,250</div><div class="monthly-price">+ $99/mo</div></div>
+          <div class="included">Growth plus appointment scheduling, workflow automations, lead capture, and up to 3 email accounts.</div>
+        </div>
+        <div class="plan-option" data-plan="commerce" tabindex="0" role="button" aria-label="Select Commerce plan">
+          <div class="plan-name">Commerce</div>
+          <div class="plan-sub">E-Commerce + Inventory</div>
+          <div class="price-line"><div class="setup-price">$1,750</div><div class="monthly-price">+ $129/mo</div></div>
+          <div class="included">Professional plus e-commerce, payment setup, inventory integration, product structure, and up to 5 email accounts.</div>
+        </div>
+      </div>
+
+      <form id="checkoutForm" class="form-grid">
+        <input type="hidden" id="selectedPlanInput" name="Selected Plan" value="Growth">
+        <input type="hidden" id="setupFeeInput" name="Setup Fee" value="$750">
+        <input type="hidden" id="monthlyFeeInput" name="Monthly Fee" value="$79/month">
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input id="name" name="Name" type="text" placeholder="Your name" required>
+        </div>
+        <div class="form-group">
+          <label for="business">Business Name</label>
+          <input id="business" name="Business Name" type="text" placeholder="Business name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input id="email" name="Email" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input id="phone" name="Phone" type="tel" placeholder="(702) 000-0000">
+        </div>
+        <div class="form-group full">
+          <label for="website">Current Website or Social Page</label>
+          <input id="website" name="Current Website or Social Page" type="text" placeholder="Website, Google Business Profile, Facebook, Instagram, etc.">
+        </div>
+        <div class="form-group full">
+          <label for="description">Project Description</label>
+          <textarea id="description" name="Project Description" placeholder="Briefly describe what you need built, updated, automated, or connected." required></textarea>
+        </div>
+
+        <div class="form-group full">
+          <label>Service Agreement</label>
+          <div class="agreement-box">
+            <h3>Axton Enterprises Service Agreement</h3>
+            <p>This agreement outlines the basic terms for website, automation, e-commerce, and related digital services provided by Axton Enterprises. By continuing, the client agrees to the selected setup fee, monthly service fee, project scope, and terms below.</p>
+
+            <h4>1. Selected Plan and Payment</h4>
+            <p>The client agrees to pay the one-time setup fee and recurring monthly service fee associated with the selected plan. Monthly service fees cover hosting, maintenance, support, and included services listed for the selected plan. Third-party costs, including payment processor fees, domain fees, premium software, Google Workspace, Microsoft 365, Stripe, Square, plugins, subscriptions, or other vendor charges, may be billed separately unless specifically stated as included.</p>
+
+            <h4>2. Initial Consultation and Revisions</h4>
+            <p>The setup fee includes one initial consultation and up to two rounds of revisions before launch. A revision round means a consolidated set of reasonable requested changes to the agreed project scope. Additional revisions, major redesigns, new features, or changes outside the original scope may require additional fees.</p>
+
+            <h4>3. Client Responsibilities</h4>
+            <ul>
+              <li>The client is responsible for providing accurate business information, branding assets, images, text, product details, login access, and approvals needed to complete the project.</li>
+              <li>The client confirms they have the rights to use any content, images, logos, trademarks, or materials they provide.</li>
+              <li>Project timelines may be delayed if requested information, access, or approvals are not provided in a timely manner.</li>
+            </ul>
+
+            <h4>4. Scope of Work</h4>
+            <p>Axton Enterprises will provide the services listed under the selected plan. Work outside the selected plan, including additional pages, custom integrations, advanced automations, product uploads, copywriting, logo design, photography, legal copy, privacy policies, terms of service, or complex database work, may require a separate quote.</p>
+
+            <h4>5. Launch, Maintenance, and Monthly Service</h4>
+            <p>After launch, the monthly fee covers ongoing hosting, basic maintenance, and support according to the selected plan. Canceling monthly service may result in loss of hosting, maintenance, support, analytics access, or other managed services provided by Axton Enterprises.</p>
+
+            <h4>6. Payments, Refunds, and Cancellations</h4>
+            <p>Setup fees reserve project time and begin the onboarding process. Setup fees are generally non-refundable once work has started. Monthly services may be canceled prospectively, but past monthly charges are not refunded. Any unpaid balances must be resolved before final files, transfers, or additional work are completed.</p>
+
+            <h4>7. Ownership and Access</h4>
+            <p>Upon full payment, the client owns the final custom website content and design created specifically for the client, excluding third-party tools, licensed software, stock assets, templates, plugins, proprietary systems, or reusable code owned by Axton Enterprises. Axton Enterprises may retain portfolio rights to display completed work unless the client requests otherwise in writing.</p>
+
+            <h4>8. Limitation of Liability</h4>
+            <p>Axton Enterprises is not responsible for lost revenue, lost data, service interruptions, third-party platform outages, payment processor issues, search ranking changes, account suspensions, or indirect damages. Services are provided in good faith to improve online presence and business functionality, but specific sales, ranking, traffic, or revenue results are not guaranteed.</p>
+
+            <h4>9. Agreement Acceptance</h4>
+            <p>By checking the agreement box and continuing, the client confirms they have reviewed and accepted these terms and authorize Axton Enterprises to begin the onboarding and checkout process for the selected plan.</p>
+          </div>
+          <label class="check-row" for="agreementCheck">
+            <input id="agreementCheck" name="Agreement Accepted" type="checkbox" required>
+            <span>I have read and agree to the Axton Enterprises Service Agreement. I understand the setup fee includes an initial consultation and up to 2 rounds of revisions before launch.</span>
+          </label>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <aside class="panel summary-card">
+    <div class="panel-header">
+      <h2>Order Summary</h2>
+      <div class="step-pill">Checkout</div>
+    </div>
+    <div class="panel-body">
+      <div class="selected-plan-name" id="summaryName">Growth</div>
+      <div class="summary-sub" id="summarySub">Website + Growth Tools</div>
+      <div class="summary-prices">
+        <div class="price-box">
+          <span>Setup Fee</span>
+          <strong id="summarySetup">$750</strong>
+        </div>
+        <div class="price-box">
+          <span>Monthly</span>
+          <strong id="summaryMonthly">$79</strong>
+        </div>
+      </div>
+      <ul class="summary-list" id="summaryFeatures"></ul>
+      <div class="notice">
+        <strong>Included with setup:</strong> one initial consultation and up to 2 revision rounds before launch. Third-party costs may be separate when required.
+      </div>
+      <button class="checkout-btn" id="checkoutBtn" type="button">Continue to Checkout</button>
+      <div class="status-msg" id="statusMsg"></div>
+      <div class="small-note">Secure checkout is processed by Stripe. Your card information is not stored by Axton Enterprises.</div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  © 2026 Axton Enterprises · axton.enterprises · Professional websites, automation, and online tools for local businesses.
+</footer>
+
+<script>
+  const plans = {
+    starter: {
+      name: 'Starter',
+      subtitle: 'Basic Website',
+      setup: '$500',
+      monthly: '$49',
+      monthlyFull: '$49/month',
+      features: ['Professional website', 'Mobile responsive design', 'SSL security', 'Contact form', 'Basic SEO', 'Website hosting included'],
+      checkoutUrl: '#stripe-starter-link'
+    },
+    growth: {
+      name: 'Growth',
+      subtitle: 'Website + Growth Tools',
+      setup: '$750',
+      monthly: '$79',
+      monthlyFull: '$79/month',
+      features: ['Everything in Starter', 'Google Business Profile optimization', 'Analytics dashboard', '1 business email setup', 'Enhanced SEO', 'Priority support'],
+      checkoutUrl: '#stripe-growth-link'
+    },
+    professional: {
+      name: 'Professional',
+      subtitle: 'Booking + Automation',
+      setup: '$1,250',
+      monthly: '$99',
+      monthlyFull: '$99/month',
+      features: ['Everything in Growth', 'Appointment scheduling', 'Workflow automations', 'Up to 3 business email accounts', 'Lead capture enhancements', 'Advanced analytics'],
+      checkoutUrl: '#stripe-professional-link'
+    },
+    commerce: {
+      name: 'Commerce',
+      subtitle: 'E-Commerce + Inventory',
+      setup: '$1,750',
+      monthly: '$129',
+      monthlyFull: '$129/month',
+      features: ['Everything in Professional', 'E-commerce store', 'Inventory integration', 'Payment processing setup', 'Product management', 'Up to 5 business email accounts'],
+      checkoutUrl: '#stripe-commerce-link'
+    }
+  };
+
+  const planOptions = document.querySelectorAll('.plan-option');
+  const summaryName = document.getElementById('summaryName');
+  const summarySub = document.getElementById('summarySub');
+  const summarySetup = document.getElementById('summarySetup');
+  const summaryMonthly = document.getElementById('summaryMonthly');
+  const summaryFeatures = document.getElementById('summaryFeatures');
+  const selectedPlanInput = document.getElementById('selectedPlanInput');
+  const setupFeeInput = document.getElementById('setupFeeInput');
+  const monthlyFeeInput = document.getElementById('monthlyFeeInput');
+  const checkoutBtn = document.getElementById('checkoutBtn');
+  const form = document.getElementById('checkoutForm');
+  const statusMsg = document.getElementById('statusMsg');
+
+  let selectedPlan = 'growth';
+
+  function setPlan(planKey) {
+    const plan = plans[planKey] || plans.growth;
+    selectedPlan = planKey;
+
+    planOptions.forEach(option => option.classList.toggle('active', option.dataset.plan === planKey));
+    summaryName.textContent = plan.name;
+    summarySub.textContent = plan.subtitle;
+    summarySetup.textContent = plan.setup;
+    summaryMonthly.textContent = plan.monthly;
+    selectedPlanInput.value = plan.name;
+    setupFeeInput.value = plan.setup;
+    monthlyFeeInput.value = plan.monthlyFull;
+
+    summaryFeatures.innerHTML = '';
+    plan.features.forEach(feature => {
+      const li = document.createElement('li');
+      li.textContent = feature;
+      summaryFeatures.appendChild(li);
+    });
+  }
+
+  planOptions.forEach(option => {
+    option.addEventListener('click', () => setPlan(option.dataset.plan));
+    option.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setPlan(option.dataset.plan);
+      }
+    });
+  });
+
+  function getPlanFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const requestedPlan = (params.get('plan') || '').toLowerCase();
+    if (plans[requestedPlan]) setPlan(requestedPlan);
+    else setPlan('growth');
+  }
+
+  checkoutBtn.addEventListener('click', async () => {
+    statusMsg.style.display = 'none';
+    statusMsg.classList.remove('error');
+
+    if (!form.reportValidity()) {
+      statusMsg.textContent = 'Please complete the required fields and accept the agreement before checkout.';
+      statusMsg.classList.add('error');
+      statusMsg.style.display = 'block';
+      return;
+    }
+
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = 'Opening Secure Checkout...';
+
+    try {
+      const response = await fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          planKey: selectedPlan,
+          customerName: document.getElementById('name').value,
+          businessName: document.getElementById('business').value,
+          customerEmail: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          website: document.getElementById('website').value,
+          projectDescription: document.getElementById('description').value,
+          legalAccepted: document.getElementById('agreementCheck').checked
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.url) {
+        throw new Error(data.error || 'Unable to create checkout session.');
+      }
+
+      window.location.href = data.url;
+    } catch (error) {
+      statusMsg.textContent = error.message;
+      statusMsg.classList.add('error');
+      statusMsg.style.display = 'block';
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = 'Continue to Checkout';
+    }
+  });
+
+  getPlanFromUrl();
+</script>
+</body>
+</html>
