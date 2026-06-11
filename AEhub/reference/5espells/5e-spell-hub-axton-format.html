@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5e Spell Hub | Axton Enterprises</title>
+<meta name="description" content="Axton Enterprises D&D 5e spell reference hub with class spell lists and quick lookup tools.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Same Axton styling */
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--navy:#0a0f1e;--navy-mid:#111827;--navy-card:#131c2e;--navy-border:#1e2d47;--blue:#1a6fff;--blue-bright:#2d7fff;--blue-light:#4e9bff;--blue-glow:rgba(26,111,255,.18);--white:#fff;--white-dim:rgba(255,255,255,.7)}
+body{font-family:'Barlow',sans-serif;background:var(--navy);color:#fff}
+header{background:rgba(10,15,30,.92);border-bottom:1px solid var(--navy-border);padding:0 48px;height:80px;display:flex;align-items:center;justify-content:space-between}
+.logo img{height:58px}
+nav a{font-family:'Barlow Condensed',sans-serif;color:var(--white-dim);text-decoration:none;padding:8px 16px}
+.hero{padding:80px 24px;text-align:center}
+.eyebrow{font-family:'Barlow Condensed',sans-serif;letter-spacing:.28em;color:var(--blue-light);text-transform:uppercase}
+h1{font-family:'Barlow Condensed',sans-serif;font-size:clamp(46px,7vw,82px);font-weight:900;text-transform:uppercase}
+h1 span{color:var(--blue)}
+.hero p{max-width:700px;margin:16px auto;color:var(--white-dim)}
+.section{padding:40px 80px 80px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px}
+.card{background:var(--navy-card);border:1px solid var(--navy-border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;transition:.3s}
+.card:hover{transform:translateY(-4px);border-color:var(--blue)}
+.visual{height:180px;background:linear-gradient(135deg,#0a0f1e,#0d1a35);display:flex;align-items:center;justify-content:center;font-size:72px}
+.content{padding:24px;display:flex;flex-direction:column;flex:1}
+.category{font-family:'Barlow Condensed',sans-serif;font-size:11px;letter-spacing:.2em;color:var(--blue-light);text-transform:uppercase}
+.title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;text-transform:uppercase;margin:10px 0}
+.desc{color:var(--white-dim);flex:1}
+.btn{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;padding:14px 20px;border-radius:8px;font-family:'Barlow Condensed',sans-serif;font-weight:800;text-transform:uppercase;margin-top:20px}
+.btn:hover{background:var(--blue-bright)}
+footer{border-top:1px solid var(--navy-border);padding:24px;text-align:center;color:rgba(255,255,255,.45)}
+@media(max-width:700px){header{padding:0 20px}.section{padding:24px}}
+</style>
+</head>
+<body>
+<header>
+<a href="../../index.html" class="logo"><img src="../../images/axton-logo.png" alt="Axton Enterprises"></a>
+<nav>
+<a href="../../index.html">Home</a>
+<a href="../index.html">AE Hub</a>
+<a href="./index.html">Reference</a>
+</nav>
+</header>
+
+<section class="hero">
+<div class="eyebrow">Axton Enterprises Reference Library</div>
+<h1>🐉 5e Spell <span>Hub</span></h1>
+<p>Quick access to Dungeons & Dragons Fifth Edition spell references organized by class.</p>
+</section>
+
+<section class="section">
+<div class="grid">
+
+<div class="card">
+<div class="visual">🧙</div>
+<div class="content">
+<div class="category">D&D 5e Reference</div>
+<div class="title">Sorcerer Spells</div>
+<div class="desc">Comprehensive Fifth Edition Sorcerer spell list for quick lookup during planning and gameplay.</div>
+<a href="./5esorcererspells.html" class="btn">Open Reference →</a>
+</div>
+</div>
+
+</div>
+</section>
+
+<footer>
+© 2026 Axton Enterprises. All rights reserved.
+</footer>
+</body>
+</html>
