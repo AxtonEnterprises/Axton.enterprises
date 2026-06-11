@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POOP! The Game | Axton Enterprises</title>
+<meta name="description" content="Play POOP! The Game by Axton Enterprises. Avoid plumbers, jump over gaps, collect corn, and try to beat your high score.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:#0a0f1e; --navy-mid:#111827; --navy-card:#131c2e; --navy-border:#1e2d47;
+    --blue:#1a6fff; --blue-bright:#2d7fff; --blue-light:#4e9bff; --blue-glow:rgba(26,111,255,0.18);
+    --white:#fff; --white-dim:rgba(255,255,255,0.7); --white-faint:rgba(255,255,255,0.12); --gold:#f0c040;
+  }
+  html, body { background:var(--navy); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; overflow-x:hidden; }
+  header { background:rgba(10,15,30,.92); border-bottom:1px solid var(--navy-border); padding:0 48px; display:flex; align-items:center; justify-content:space-between; height:80px; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+  .logo { display:flex; align-items:center; text-decoration:none; }
+  .header-logo-img { height:58px; width:auto; display:block; object-fit:contain; }
+  nav { display:flex; align-items:center; gap:8px; }
+  nav a { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; padding:8px 16px; border-radius:6px; transition:.2s; }
+  nav a:hover, nav a.active { color:var(--white); background:var(--white-faint); }
+  .nav-cta { background:var(--blue)!important; color:#fff!important; border-radius:8px!important; padding:10px 20px!important; }
+  .hero { position:relative; padding:72px 24px 34px; text-align:center; overflow:hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 20%, rgba(26,111,255,.22), transparent 55%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:1; max-width:900px; margin:0 auto; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:16px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(46px,7vw,82px); font-weight:900; letter-spacing:.03em; text-transform:uppercase; line-height:.95; margin-bottom:16px; }
+  h1 span { color:var(--blue); }
+  .hero p { color:var(--white-dim); font-size:17px; line-height:1.6; max-width:680px; margin:0 auto; }
+  .game-section { padding:32px 24px 80px; }
+  .game-shell { max-width:980px; margin:0 auto; background:var(--navy-card); border:1px solid var(--navy-border); border-radius:20px; padding:26px; box-shadow:0 24px 64px rgba(0,0,0,.45); }
+  .game-top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+  .game-title { font-family:'Barlow Condensed',sans-serif; font-size:30px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--white); }
+  .score-box { font-family:'Barlow Condensed',sans-serif; font-size:25px; font-weight:800; color:var(--blue-light); letter-spacing:.05em; }
+  .canvas-frame { border:4px solid var(--blue); border-radius:16px; padding:8px; background:rgba(26,111,255,.08); box-shadow:0 0 0 1px rgba(78,155,255,.35), 0 0 34px rgba(26,111,255,.24); }
+  canvas { display:block; width:100%; max-width:100%; border-radius:10px; background:#87CEEB; touch-action:none; }
+  .game-instructions { margin-top:18px; text-align:center; color:var(--white-dim); line-height:1.55; }
+  .game-instructions strong { color:var(--white); font-size:18px; }
+  .game-actions { margin-top:22px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--blue); color:#fff; border:0; border-radius:8px; padding:13px 22px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:.2s; }
+  .btn:hover { background:var(--blue-bright); transform:translateY(-1px); }
+  .btn-ghost { background:transparent; border:1px solid var(--navy-border); color:var(--white); }
+  .btn-ghost:hover { border-color:var(--blue); background:var(--blue-glow); }
+  .high-score { color:var(--blue-light); font-weight:700; }
+  .idea-section { max-width:980px; margin:28px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .info-card, .idea-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:18px; padding:28px; }
+  .section-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:12px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:34px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; line-height:1; margin-bottom:12px; }
+  .section-title span { color:var(--blue); }
+  .info-card p, .idea-card p { color:var(--white-dim); line-height:1.6; font-size:15px; }
+  .idea-form { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .idea-form label { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue-light); }
+  .idea-form input, .idea-form textarea { width:100%; background:rgba(255,255,255,.05); border:1px solid var(--navy-border); border-radius:8px; color:var(--white); font-family:'Barlow',sans-serif; font-size:15px; padding:12px 13px; outline:none; }
+  .idea-form textarea { min-height:120px; resize:vertical; }
+  .idea-form input:focus, .idea-form textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-glow); }
+  footer { background:var(--navy-mid); border-top:1px solid var(--navy-border); padding:26px 48px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,.42); font-size:13px; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+  .footer-links a { color:var(--white-dim); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .footer-links a:hover { color:var(--blue-light); }
+  @media (max-width:768px) {
+    header { padding:0 20px; } nav { display:none; } .header-logo-img { height:46px; }
+    .game-shell { padding:16px; } .idea-section { grid-template-columns:1fr; } footer { padding:24px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="../../../index.html" class="logo"><img src="../../../images/axton-logo.png" alt="Axton Enterprises" class="header-logo-img"></a>
+  <nav>
+    <a href="../../../index.html">Home</a>
+    <a href="../../index.html">AE Hub</a>
+    <a href="../index.html" class="active">Games</a>
+    <a href="#submit-idea" class="nav-cta">Submit Idea</a>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Axton Enterprises Game Lab</div>
+      <h1>💩 POOP! <span>The Game</span></h1>
+      <p>A fast-scrolling arcade game. Avoid plumbers, jump over gaps, grab corn, and try to make it to the finish pipe.</p>
+    </div>
+  </section>
+  <section class="game-section">
+    <div class="game-shell">
+      <div class="game-top">
+        <div class="game-title">Play POOP! The Game</div>
+        <div class="score-box">Score: <span id="scoreDisplay">0</span></div>
+      </div>
+      <div class="canvas-frame">
+        <canvas id="gameCanvas" width="800" height="500"></canvas>
+      </div>
+      <div class="game-instructions">
+        <p><strong>Tap or click to jump.</strong></p>
+        <p>Avoid the plumbers 🔧 · Jump over gaps · Double jump · Collect corn 🌽</p>
+        <p class="high-score">High Score: <span id="highScoreDisplay">0</span></p>
+      </div>
+      <div class="game-actions">
+        <button id="shareButton" class="btn">Share Game</button>
+        <button id="level2Button" class="btn btn-ghost">Request Level 2</button>
+        <a href="../index.html" class="btn btn-ghost">More Games</a>
+      </div>
+    </div>
+    <div class="idea-section" id="submit-idea">
+      <div class="info-card">
+        <div class="section-label">Share Link</div>
+        <h2 class="section-title">Challenge <span>Someone</span></h2>
+        <p>Use the Share Game button to send this game to friends or copy the current page link. High scores stay on your device for now.</p>
+      </div>
+      <div class="idea-card">
+        <div class="section-label">Game Ideas</div>
+        <h2 class="section-title">Submit a <span>Game Idea</span></h2>
+        <p>Have an idea for the next Axton game? Send the concept and we’ll review it.</p>
+        <form class="idea-form" action="mailto:info@axton.enterprises" method="post" enctype="text/plain">
+          <div><label for="name">Name</label><input id="name" name="Name" type="text" required></div>
+          <div><label for="email">Email</label><input id="email" name="Email" type="email" required></div>
+          <div><label for="idea">Game Idea</label><textarea id="idea" name="Game Idea" required></textarea></div>
+          <button class="btn" type="submit">Send Game Idea</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div>© 2026 Axton Enterprises. All rights reserved.</div>
+  <div class="footer-links"><a href="../../../index.html">Home</a><a href="../../index.html">AE Hub</a><a href="../index.html">Games</a></div>
+</footer>
+<script>
+const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const highScoreDisplay = document.getElementById('highScoreDisplay');
+        const shareButton = document.getElementById('shareButton');
+        const level2Button = document.getElementById('level2Button');
+
+        let score = 0;
+        let highScore = 0;
+
+        const game = {
+            player: { x: 150, y: 300, vx: 0, vy: 0, width: 40, height: 40, onGround: false, jumpsLeft: 2 },
+            camera: { x: 0 },
+            score: 0,
+            platforms: [
+                { x: 0, y: 450, width: 800, height: 20 },
+                { x: 950, y: 450, width: 600, height: 20 },
+                { x: 1700, y: 450, width: 700, height: 20 },
+                { x: 2550, y: 450, width: 600, height: 20 },
+                { x: 3300, y: 450, width: 800, height: 20 },
+                { x: 4250, y: 450, width: 700, height: 20 },
+                { x: 5100, y: 450, width: 900, height: 20 },
+                { x: 350, y: 350, width: 150, height: 20 },
+                { x: 600, y: 300, width: 200, height: 20 },
+                { x: 1100, y: 350, width: 180, height: 20 },
+                { x: 1400, y: 300, width: 150, height: 20 },
+                { x: 1900, y: 350, width: 200, height: 20 },
+                { x: 2200, y: 300, width: 150, height: 20 },
+                { x: 2700, y: 350, width: 180, height: 20 },
+                { x: 3000, y: 300, width: 200, height: 20 },
+                { x: 3500, y: 350, width: 150, height: 20 },
+                { x: 3800, y: 300, width: 180, height: 20 },
+                { x: 4400, y: 350, width: 200, height: 20 },
+                { x: 4700, y: 300, width: 150, height: 20 },
+                { x: 5300, y: 350, width: 180, height: 20 }
+            ],
+            coins: [
+                { x: 400, y: 300, collected: false },
+                { x: 650, y: 250, collected: false },
+                { x: 900, y: 200, collected: false },
+                { x: 1150, y: 250, collected: false },
+                { x: 1380, y: 300, collected: false },
+                { x: 1580, y: 250, collected: false },
+                { x: 1800, y: 230, collected: false },
+                { x: 2050, y: 270, collected: false },
+                { x: 2300, y: 300, collected: false },
+                { x: 2530, y: 250, collected: false },
+                { x: 2730, y: 200, collected: false },
+                { x: 3030, y: 250, collected: false },
+                { x: 3230, y: 300, collected: false },
+                { x: 3480, y: 250, collected: false },
+                { x: 3730, y: 230, collected: false },
+                { x: 3960, y: 280, collected: false },
+                { x: 4160, y: 330, collected: false },
+                { x: 4460, y: 300, collected: false },
+                { x: 4660, y: 250, collected: false },
+                { x: 4910, y: 300, collected: false },
+                { x: 5160, y: 270, collected: false },
+                { x: 5390, y: 230, collected: false },
+                { x: 5640, y: 280, collected: false }
+            ],
+            pipes: [
+                { x: 0, y: 390, height: 60 },
+                { x: 500, y: 390, height: 60 },
+                { x: 1200, y: 370, height: 80 },
+                { x: 2100, y: 390, height: 60 },
+                { x: 3000, y: 380, height: 70 },
+                { x: 3900, y: 390, height: 60 },
+                { x: 4800, y: 370, height: 80 }
+            ],
+            plumbers: [
+                { x: 900, y: 410, vx: -1.5, vy: 0, onGround: false },
+                { x: 1800, y: 410, vx: -1.6, vy: 0, onGround: false },
+                { x: 2700, y: 410, vx: -1.5, vy: 0, onGround: false },
+                { x: 3700, y: 410, vx: -1.7, vy: 0, onGround: false },
+                { x: 4600, y: 410, vx: -1.6, vy: 0, onGround: false },
+                { x: 5500, y: 410, vx: -1.5, vy: 0, onGround: false }
+            ],
+            clouds: [
+                { x: 200, y: 100 }, { x: 500, y: 150 }, { x: 900, y: 80 },
+                { x: 1300, y: 120 }, { x: 1700, y: 90 }, { x: 2100, y: 140 },
+                { x: 2500, y: 110 }, { x: 2900, y: 130 }, { x: 3300, y: 95 },
+                { x: 3700, y: 125 }, { x: 4100, y: 105 }, { x: 4500, y: 145 },
+                { x: 4900, y: 115 }, { x: 5300, y: 135 }, { x: 5700, y: 100 }
+            ],
+            finishPipe: { x: 6000, y: 150, width: 400, height: 200, reached: false },
+            gravity: 0.5,
+            jumpPower: -13,
+            autoScrollSpeed: 2,
+            gameOver: false
+        };
+
+        function resetGame() {
+            game.player = { x: 150, y: 300, vx: 0, vy: 0, width: 40, height: 40, onGround: false, jumpsLeft: 2 };
+            game.camera = { x: 0 };
+            game.score = 0;
+            game.coins.forEach(coin => coin.collected = false);
+            game.pipes = [
+                { x: 0, y: 390, height: 60 },
+                { x: 500, y: 390, height: 60 },
+                { x: 1200, y: 370, height: 80 },
+                { x: 2100, y: 390, height: 60 },
+                { x: 3000, y: 380, height: 70 },
+                { x: 3900, y: 390, height: 60 },
+                { x: 4800, y: 370, height: 80 }
+            ];
+            game.plumbers = [
+                { x: 900, y: 410, vx: -1.5, vy: 0, onGround: false },
+                { x: 1800, y: 410, vx: -1.6, vy: 0, onGround: false },
+                { x: 2700, y: 410, vx: -1.5, vy: 0, onGround: false },
+                { x: 3700, y: 410, vx: -1.7, vy: 0, onGround: false },
+                { x: 4600, y: 410, vx: -1.6, vy: 0, onGround: false },
+                { x: 5500, y: 410, vx: -1.5, vy: 0, onGround: false }
+            ];
+            game.gameOver = false;
+            game.finishPipe.reached = false;
+            score = 0;
+            scoreDisplay.textContent = '0';
+        }
+
+        function handleJump() {
+            if (game.gameOver || game.finishPipe.reached) {
+                resetGame();
+                return;
+            }
+            const p = game.player;
+            if (p.jumpsLeft > 0) {
+                p.vy = game.jumpPower;
+                p.jumpsLeft--;
+                p.onGround = false;
+            }
+        }
+
+        canvas.addEventListener('click', handleJump);
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            handleJump();
+        });
+
+        function drawPlumber(ctx, x, y) {
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(x - 15, y - 35, 30, 10);
+            ctx.fillStyle = '#FFDBAC';
+            ctx.fillRect(x - 12, y - 25, 24, 20);
+            ctx.fillStyle = '#654321';
+            ctx.fillRect(x - 10, y - 12, 20, 6);
+            ctx.fillStyle = '#0000FF';
+            ctx.fillRect(x - 10, y - 6, 20, 16);
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(x - 6, y - 2, 4, 4);
+            ctx.fillRect(x + 2, y - 2, 4, 4);
+            ctx.fillStyle = '#654321';
+            ctx.fillRect(x - 10, y + 10, 8, 6);
+            ctx.fillRect(x + 2, y + 10, 8, 6);
+        }
+
+        function drawPipe(ctx, x, y, height) {
+            ctx.fillStyle = '#2D8B3D';
+            ctx.fillRect(x, y, 50, height);
+            ctx.fillStyle = '#3BA54A';
+            ctx.fillRect(x - 5, y - 10, 60, 10);
+            ctx.fillStyle = '#4FC45F';
+            ctx.fillRect(x + 5, y, 5, height);
+            ctx.fillStyle = '#1F5F2A';
+            ctx.fillRect(x + 45, y, 5, height);
+        }
+
+        function drawHorizontalPipe(ctx, x, y, width, height) {
+            ctx.fillStyle = '#2D8B3D';
+            ctx.fillRect(x, y, width, height);
+            ctx.fillStyle = '#1F5F2A';
+            ctx.fillRect(x, y, 20, height);
+            ctx.fillStyle = '#000000';
+            ctx.globalAlpha = 0.3;
+            ctx.fillRect(x, y + 10, 40, height - 20);
+            ctx.globalAlpha = 1.0;
+            ctx.fillStyle = '#3BA54A';
+            ctx.fillRect(x, y - 10, width, 10);
+            ctx.fillRect(x, y + height, width, 10);
+            ctx.fillStyle = '#4FC45F';
+            ctx.fillRect(x + 20, y + 5, width - 20, 10);
+            ctx.fillStyle = '#1F5F2A';
+            ctx.fillRect(x + 20, y + height - 15, width - 20, 10);
+        }
+
+        function drawCloud(ctx, x, y) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.beginPath();
+            ctx.arc(x, y, 20, 0, Math.PI * 2);
+            ctx.arc(x + 20, y, 25, 0, Math.PI * 2);
+            ctx.arc(x + 40, y, 20, 0, Math.PI * 2);
+            ctx.arc(x + 20, y - 15, 20, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function drawCorn(ctx, x, y) {
+            ctx.font = '24px Arial';
+            ctx.fillText('🌽', x - 12, y + 12);
+        }
+
+        function gameLoop() {
+            const p = game.player;
+
+            if (!game.gameOver && !game.finishPipe.reached) {
+                const scrollAmount = game.autoScrollSpeed;
+                game.camera.x += scrollAmount;
+                p.x += scrollAmount;
+
+                if (game.camera.x < 0) {
+                    game.camera.x = 0;
+                    p.x = 50;
+                }
+
+                p.vy += game.gravity;
+                p.y += p.vy;
+
+                if (p.y > 550 || p.x < game.camera.x - p.width || p.x > game.camera.x + 800) {
+                    game.gameOver = true;
+                    if (game.score > highScore) {
+                        highScore = game.score;
+                        highScoreDisplay.textContent = highScore;
+                        shareButton.classList.remove('hidden');
+                    }
+                }
+
+                let onPlatform = false;
+
+                game.platforms.forEach(platform => {
+                    if (p.x + p.width > platform.x && p.x < platform.x + platform.width) {
+                        if (p.y + p.height > platform.y && p.y + p.height < platform.y + 20 && p.vy >= 0) {
+                            p.y = platform.y - p.height;
+                            p.vy = 0;
+                            p.onGround = true;
+                            p.jumpsLeft = 2;
+                            onPlatform = true;
+                        }
+                    }
+                });
+
+                if (!onPlatform) p.onGround = false;
+
+                if (p.x + p.width > game.finishPipe.x && p.x < game.finishPipe.x + game.finishPipe.width) {
+                    if (p.y + p.height > game.finishPipe.y && p.y < game.finishPipe.y + game.finishPipe.height) {
+                        game.finishPipe.reached = true;
+                        if (game.score > highScore) {
+                            highScore = game.score;
+                            highScoreDisplay.textContent = highScore;
+                            shareButton.classList.remove('hidden');
+                        }
+                    }
+                }
+
+                game.pipes.forEach(pipe => {
+                    if (p.x + p.width > pipe.x && p.x < pipe.x + 50) {
+                        if (p.y + p.height > pipe.y && p.y < pipe.y + pipe.height) {
+                            p.x = pipe.x - p.width;
+                            const pushBack = -5;
+                            game.camera.x += pushBack;
+                            p.x += pushBack;
+                            if (game.camera.x < 0) {
+                                game.camera.x = 0;
+                                p.x = pipe.x - p.width;
+                            }
+                            if (p.vy > 0) p.vy *= 0.5;
+                        }
+                        if (p.y + p.height > pipe.y - 10 && p.y + p.height < pipe.y && p.vy >= 0) {
+                            p.y = pipe.y - 10 - p.height;
+                            p.vy = 0;
+                            p.onGround = true;
+                            p.jumpsLeft = 2;
+                            onPlatform = true;
+                        }
+                    }
+                });
+
+                game.coins.forEach(coin => {
+                    if (!coin.collected) {
+                        const dx = p.x + p.width / 2 - coin.x;
+                        const dy = p.y + p.height / 2 - coin.y;
+                        const dist = Math.sqrt(dx * dx + dy * dy);
+                        if (dist < 30) {
+                            coin.collected = true;
+                            game.score += 10;
+                            score = game.score;
+                            scoreDisplay.textContent = score;
+                        }
+                    }
+                });
+
+                game.plumbers.forEach(plumber => {
+                    const distanceFromCamera = plumber.x - game.camera.x;
+                    const isActive = distanceFromCamera > -200 && distanceFromCamera < 1000;
+
+                    if (!isActive && plumber.x > game.camera.x + 1000) return;
+
+                    plumber.vy += game.gravity;
+                    plumber.y += plumber.vy;
+                    plumber.x += plumber.vx;
+
+                    let plumberOnPlatform = false;
+
+                    game.platforms.forEach(platform => {
+                        if (plumber.x + 15 > platform.x && plumber.x - 15 < platform.x + platform.width) {
+                            if (plumber.y + 16 > platform.y && plumber.y + 16 < platform.y + 20 && plumber.vy >= 0) {
+                                plumber.y = platform.y - 16;
+                                plumber.vy = 0;
+                                plumber.onGround = true;
+                                plumberOnPlatform = true;
+                            }
+                        }
+                    });
+
+                    if (!plumberOnPlatform) plumber.onGround = false;
+
+                    if (plumber.x < game.camera.x - 200 || plumber.y > 550) {
+                        const furthestPlumber = Math.max(...game.plumbers.map(pl => pl.x));
+                        plumber.x = Math.max(furthestPlumber + 900, game.camera.x + 1200);
+                        plumber.y = 410;
+                        plumber.vy = 0;
+                    }
+
+                    if (isActive) {
+                        const dx = Math.abs((p.x + p.width / 2) - plumber.x);
+                        const dy = Math.abs((p.y + p.height / 2) - (plumber.y + 8));
+                        if (dx < 35 && dy < 35) {
+                            game.gameOver = true;
+                            if (game.score > highScore) {
+                                highScore = game.score;
+                                highScoreDisplay.textContent = highScore;
+                                shareButton.classList.remove('hidden');
+                            }
+                        }
+                    }
+                });
+            }
+
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            game.clouds.forEach(cloud => {
+                drawCloud(ctx, cloud.x - game.camera.x * 0.5, cloud.y);
+            });
+
+            ctx.fillStyle = '#654321';
+            game.platforms.forEach(platform => {
+                ctx.fillRect(platform.x - game.camera.x, platform.y, platform.width, platform.height);
+            });
+
+            game.pipes.forEach(pipe => {
+                drawPipe(ctx, pipe.x - game.camera.x, pipe.y, pipe.height);
+            });
+
+            drawHorizontalPipe(ctx, game.finishPipe.x - game.camera.x, game.finishPipe.y, game.finishPipe.width, game.finishPipe.height);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 32px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('FINISH', game.finishPipe.x - game.camera.x + 200, game.finishPipe.y + 120);
+            ctx.textAlign = 'left';
+
+            game.coins.forEach(coin => {
+                if (!coin.collected) {
+                    drawCorn(ctx, coin.x - game.camera.x, coin.y);
+                }
+            });
+
+            game.plumbers.forEach(plumber => {
+                const distanceFromCamera = plumber.x - game.camera.x;
+                if (distanceFromCamera > -200 && distanceFromCamera < 1000) {
+                    drawPlumber(ctx, plumber.x - game.camera.x, plumber.y);
+                }
+            });
+
+            ctx.font = `${p.height}px Arial`;
+            ctx.fillText('💩', p.x - game.camera.x, p.y + p.height);
+
+            if (game.gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('FLUSHED!', canvas.width / 2, canvas.height / 2 - 40);
+                ctx.font = '24px Arial';
+                ctx.fillText(`Score: ${game.score}`, canvas.width / 2, canvas.height / 2 + 10);
+                ctx.fillText(`High Score: ${highScore}`, canvas.width / 2, canvas.height / 2 + 45);
+                ctx.fillText('Tap to Restart', canvas.width / 2, canvas.height / 2 + 90);
+                ctx.textAlign = 'left';
+            }
+
+            if (game.finishPipe.reached) {
+                ctx.fillStyle = 'rgba(0, 150, 0, 0.8)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.font = 'bold 48px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Congratulations!', canvas.width / 2, canvas.height / 2 - 40);
+                ctx.font = '32px Arial';
+                ctx.fillText('Level 1 Complete!', canvas.width / 2, canvas.height / 2 + 10);
+                ctx.font = '24px Arial';
+                ctx.fillText(`Score: ${game.score}`, canvas.width / 2, canvas.height / 2 + 50);
+                ctx.fillText('Tap to Play Again', canvas.width / 2, canvas.height / 2 + 90);
+                ctx.textAlign = 'left';
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        shareButton.addEventListener('click', () => {
+            const text = `I scored ${highScore} points playing Poop! The Game, check it out!`;
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'POOP! The Game',
+                    text: text,
+                    url: url
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+                    alert('Link copied to clipboard!');
+                }).catch(() => {
+                    alert(`${text} ${url}`);
+                });
+            }
+        });
+
+        level2Button.addEventListener('click', () => {
+            const email = 'info@axton.enterprises';
+            const subject = 'When is level 2?!';
+            const body = "Let me know! I can't wait! Thanks!";
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        });
+
+        gameLoop();
+</script>
+</body>
+</html>
