@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AE Game Hub | Axton Enterprises</title>
+<meta name="description" content="AE Game Hub by Axton Enterprises — play browser games and utilities built by Axton Enterprises.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a0f1e;
+    --navy-mid: #111827;
+    --navy-card: #131c2e;
+    --navy-border: #1e2d47;
+    --blue: #1a6fff;
+    --blue-bright: #2d7fff;
+    --blue-light: #4e9bff;
+    --blue-glow: rgba(26,111,255,0.18);
+    --blue-glow-strong: rgba(26,111,255,0.28);
+    --white: #ffffff;
+    --white-dim: rgba(255,255,255,0.7);
+    --white-faint: rgba(255,255,255,0.12);
+  }
+
+  html, body {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse at top right, rgba(26,111,255,0.18) 0%, transparent 42%),
+      radial-gradient(ellipse at bottom left, rgba(26,111,255,0.10) 0%, transparent 38%);
+    z-index: 0;
+  }
+
+  header {
+    background: rgba(10,15,30,0.92);
+    border-bottom: 1px solid var(--navy-border);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .header-logo-img {
+    height: 58px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  nav a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: color 0.2s, background 0.2s;
+  }
+
+  nav a:hover { color: var(--white); background: var(--white-faint); }
+  nav a.active { color: var(--blue-light); }
+
+  .nav-cta {
+    background: var(--blue) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    padding: 10px 20px !important;
+  }
+
+  .nav-cta:hover { background: var(--blue-bright) !important; }
+
+  main { position: relative; z-index: 1; }
+
+  .hero {
+    position: relative;
+    padding: 86px 80px 56px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--navy-border);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--navy-border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--navy-border) 1px, transparent 1px);
+    background-size: 80px 80px;
+    opacity: 0.22;
+    mask-image: linear-gradient(to bottom right, transparent 0%, black 30%, black 70%, transparent 100%);
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 840px;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 40px;
+    height: 2px;
+    background: var(--blue);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(52px, 8vw, 92px);
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 0.92;
+    margin-bottom: 24px;
+  }
+
+  h1 span { color: var(--blue); display: block; }
+
+  .hero-sub {
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--white-dim);
+    line-height: 1.6;
+    max-width: 620px;
+  }
+
+  .hub-section {
+    padding: 72px 80px 90px;
+    background: var(--navy-mid);
+  }
+
+  .hub-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 42px;
+    flex-wrap: wrap;
+  }
+
+  .hub-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(34px, 5vw, 58px);
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .hub-title span { color: var(--blue); }
+
+  .hub-copy {
+    font-size: 15px;
+    color: var(--white-dim);
+    line-height: 1.7;
+    max-width: 440px;
+  }
+
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .game-card {
+    background: var(--navy-card);
+    border: 1px solid var(--navy-border);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  }
+
+  .game-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--blue-glow) 0%, transparent 58%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .game-card:hover {
+    border-color: var(--blue);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 48px rgba(26,111,255,0.18), 0 8px 20px rgba(0,0,0,0.4);
+  }
+
+  .game-card:hover::before { opacity: 1; }
+
+  .game-visual {
+    height: 170px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--navy-border);
+  }
+
+  .game-visual::before {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .game-icon {
+    position: relative;
+    z-index: 1;
+    width: 86px;
+    height: 86px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.11);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 44px;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.24);
+  }
+
+  .theme-dragon { background: linear-gradient(135deg, #1a0a1e 0%, #2d1238 50%, #0d1a35 100%); }
+  .theme-poop { background: linear-gradient(135deg, #25150b 0%, #3c2415 55%, #0f172a 100%); }
+  .theme-laundry { background: linear-gradient(135deg, #0a1a2e 0%, #123454 55%, #0a0f1e 100%); }
+  .theme-pictionary { background: linear-gradient(135deg, #1e1035 0%, #3a1a55 55%, #0a0f1e 100%); }
+  .theme-office { background: linear-gradient(135deg, #101827 0%, #1f3153 55%, #0a0f1e 100%); }
+  .theme-horse { background: linear-gradient(135deg, #102115 0%, #1f4a2c 55%, #0a0f1e 100%); }
+
+  .game-content {
+    padding: 26px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+  }
+
+  .game-kicker {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 8px;
+  }
+
+  .game-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 25px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .game-description {
+    color: var(--white-dim);
+    font-size: 14px;
+    line-height: 1.6;
+    flex: 1;
+    margin-bottom: 22px;
+  }
+
+  .play-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    background: var(--blue);
+    color: #fff;
+    padding: 14px 20px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  }
+
+  .play-button:hover {
+    background: var(--blue-bright);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 28px rgba(26,111,255,0.35);
+  }
+
+  .bottom-strip {
+    background: var(--navy-mid);
+    border-top: 1px solid var(--navy-border);
+    padding: 44px 80px;
+    display: grid;
+    grid-template-columns: 1fr 1.2fr auto;
+    gap: 42px;
+    align-items: start;
+    position: relative;
+    z-index: 1;
+  }
+
+  .strip-section h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--blue-light);
+    margin-bottom: 10px;
+  }
+
+  .strip-section p, .strip-section li {
+    font-size: 14px;
+    color: var(--white-dim);
+    line-height: 1.6;
+  }
+
+  .strip-section strong { color: var(--white); }
+
+  .quick-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .quick-links a {
+    color: var(--white-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .quick-links a:hover { color: var(--blue-light); }
+
+  .strip-logo {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+
+  .strip-logo-img {
+    height: 50px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+  }
+
+  .domain {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+  }
+
+  .footer-bar {
+    background: var(--navy);
+    border-top: 1px solid var(--navy-border);
+    padding: 20px 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--blue-light); }
+
+  .footer-copy {
+    font-size: 12px;
+    color: rgba(255,255,255,0.35);
+  }
+
+  @media (max-width: 1100px) {
+    .games-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero, .hub-section, .bottom-strip, .footer-bar { padding-left: 40px; padding-right: 40px; }
+    .bottom-strip { grid-template-columns: 1fr 1fr; }
+    .strip-logo { grid-column: 1 / -1; align-items: flex-start; text-align: left; }
+  }
+
+  @media (max-width: 760px) {
+    header { padding: 0 20px; }
+    nav { display: none; }
+    .header-logo-img { height: 46px; }
+    .hero { padding: 58px 24px 42px; }
+    .hub-section { padding: 56px 24px 70px; }
+    .games-grid { grid-template-columns: 1fr; }
+    .bottom-strip { grid-template-columns: 1fr; padding: 36px 24px; }
+    .footer-bar { padding: 20px 24px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="../../index.html" class="logo">
+    <img src="../../images/axton-logo.png" alt="Axton Enterprises" class="header-logo-img">
+  </a>
+  <nav>
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">AE Hub</a>
+    <a href="index.html" class="active">Games</a>
+    <a href="../../pricing/index.html">Pricing</a>
+    <a href="../../index.html#contact" class="nav-cta">Get Started</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="section-label">Axton Enterprises Game Hub</div>
+      <h1>Play AE<br><span>Games</span></h1>
+      <p class="hero-sub">A collection of browser games and creative tools built by Axton Enterprises. Pick a card and launch directly into the game.</p>
+    </div>
+  </section>
+
+  <section class="hub-section">
+    <div class="hub-header">
+      <div>
+        <div class="section-label">Available Games</div>
+        <h2 class="hub-title">Choose Your <span>Game</span></h2>
+      </div>
+      <p class="hub-copy">All six original games are preserved below with their direct play links, updated into the same Axton Enterprises visual system as the rest of the site.</p>
+    </div>
+
+    <div class="games-grid">
+      <article class="game-card">
+        <div class="game-visual theme-dragon"><div class="game-icon">🐉</div></div>
+        <div class="game-content">
+          <div class="game-kicker">Arcade</div>
+          <h2 class="game-title">Flappy Dragon</h2>
+          <p class="game-description">Flap your wings, don't hit the gold or stalactites, and escape the cave in this exciting adventure.</p>
+          <a href="flappydragon/index.html" class="play-button">Play Now →</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-visual theme-poop"><div class="game-icon">💩</div></div>
+        <div class="game-content">
+          <div class="game-kicker">Scroller</div>
+          <h2 class="game-title">Poop! The Game</h2>
+          <p class="game-description">Avoid getting flushed in this action-packed scroller that will keep you on the edge of your seat.</p>
+          <a href="poop/index.html" class="play-button">Play Now →</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-visual theme-laundry"><div class="game-icon">👕</div></div>
+        <div class="game-content">
+          <div class="game-kicker">Matching</div>
+          <h2 class="game-title">Laundry! The Game</h2>
+          <p class="game-description">Match clothing items as they come out of the dryer to finish the chore in this fast-paced matching game.</p>
+          <a href="laundry/index.html" class="play-button">Play Now →</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-visual theme-pictionary"><div class="game-icon">🎨</div></div>
+        <div class="game-content">
+          <div class="game-kicker">Party Tool</div>
+          <h2 class="game-title">Pictionary Prompt Generator</h2>
+          <p class="game-description">Get prompts to play charades or pictionary at home with friends. Perfect for game night.</p>
+          <a href="pictionary/index.html" class="play-button">Play Now →</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-visual theme-office"><div class="game-icon">💼</div></div>
+        <div class="game-content">
+          <div class="game-kicker">Adventure</div>
+          <h2 class="game-title">Office Battle</h2>
+          <p class="game-description">Survive a day in the office by facing wild encounters with accountants, middle management, and more.</p>
+          <a href="officebattle/index.html" class="play-button">Play Now →</a>
+        </div>
+      </article>
+
+      <article class="game-card">
+        <div class="game-visual theme-horse"><div class="game-icon">🐴</div></div>
+        <div class="game-content">
+          <div class="game-kicker">Runner</div>
+          <h2 class="game-title">Horse Race</h2>
+          <p class="game-description">Race a horse through the forest, but avoid the skunks.</p>
+          <a href="horserace/index.html" class="play-button">Play Now →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<div class="bottom-strip">
+  <div class="strip-section">
+    <h3>AE Game Hub</h3>
+    <p><strong>Browser-based games</strong> built for quick play, easy sharing, and direct access from the Axton Enterprises hub.</p>
+  </div>
+  <div class="strip-section">
+    <h3>Quick Links</h3>
+    <ul class="quick-links">
+      <li><a href="../index.html">Return to AE Hub</a></li>
+      <li><a href="../../index.html">Axton Enterprises Home</a></li>
+      <li><a href="../../pricing/index.html">View Pricing</a></li>
+    </ul>
+  </div>
+  <div class="strip-logo">
+    <a href="../../index.html" class="logo">
+      <img src="../../images/axton-logo.png" alt="Axton Enterprises" class="strip-logo-img">
+    </a>
+    <div class="domain">axton.enterprises</div>
+  </div>
+</div>
+
+<div class="footer-bar">
+  <div class="footer-links">
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">AE Hub</a>
+    <a href="../../pricing/index.html">Pricing</a>
+  </div>
+  <div class="footer-copy">© 2026 Axton Enterprises · AE Game Hub</div>
+</div>
+</body>
+</html>
