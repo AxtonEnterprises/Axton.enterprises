@@ -1,0 +1,1270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5e Sorcerer Spells | Axton Enterprises</title>
+<meta name="description" content="Axton Enterprises D&D 5e Sorcerer spell reference with searchable spell cards, type filters, and spell level filters.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --navy:#0a0f1e; --navy-mid:#111827; --navy-card:#131c2e; --navy-border:#1e2d47;
+    --blue:#1a6fff; --blue-bright:#2d7fff; --blue-light:#4e9bff; --blue-glow:rgba(26,111,255,0.18);
+    --white:#fff; --white-dim:rgba(255,255,255,0.7); --white-faint:rgba(255,255,255,0.12); --gold:#f0c040;
+  }
+  html, body { background:var(--navy); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; overflow-x:hidden; }
+  header.site-header { background:rgba(10,15,30,.92); border-bottom:1px solid var(--navy-border); padding:0 48px; display:flex; align-items:center; justify-content:space-between; height:80px; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+  .logo { display:flex; align-items:center; text-decoration:none; }
+  .header-logo-img { height:58px; width:auto; display:block; object-fit:contain; }
+  nav { display:flex; align-items:center; gap:8px; }
+  nav a { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; padding:8px 16px; border-radius:6px; transition:.2s; }
+  nav a:hover, nav a.active { color:var(--white); background:var(--white-faint); }
+  .nav-cta { background:var(--blue)!important; color:#fff!important; border-radius:8px!important; padding:10px 20px!important; }
+
+  .hero { position:relative; padding:72px 24px 34px; text-align:center; overflow:hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 20%, rgba(26,111,255,.22), transparent 55%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:1; max-width:900px; margin:0 auto; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:16px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(46px,7vw,82px); font-weight:900; letter-spacing:.03em; text-transform:uppercase; line-height:.95; margin-bottom:16px; color:var(--white); }
+  h1 span { color:var(--blue); }
+  .hero p { color:var(--white-dim); font-size:17px; line-height:1.6; max-width:760px; margin:0 auto; }
+
+  .reference-section { padding:32px 24px 80px; }
+  .reference-shell { max-width:1200px; margin:0 auto; background:var(--navy-card); border:1px solid var(--navy-border); border-radius:20px; padding:26px; box-shadow:0 24px 64px rgba(0,0,0,.45); }
+  .reference-top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+  .reference-title { font-family:'Barlow Condensed',sans-serif; font-size:30px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--white); }
+  .reference-subtitle { color:var(--white-dim); margin-top:4px; font-size:14px; }
+  .status-box { font-family:'Barlow Condensed',sans-serif; font-size:25px; font-weight:800; color:var(--blue-light); letter-spacing:.05em; }
+  .reference-frame { border:4px solid var(--blue); border-radius:16px; padding:24px; background:linear-gradient(180deg, rgba(26,111,255,.08), rgba(26,111,255,.03)); box-shadow:0 0 0 1px rgba(78,155,255,.35), 0 0 34px rgba(26,111,255,.24); }
+
+  .app-container { background:rgba(255,255,255,.96); border-radius:18px; box-shadow:0 18px 50px rgba(0,0,0,.28); overflow:hidden; color:#111827; }
+  .app-header { background:linear-gradient(135deg, #0f172a, #1d4ed8); color:white; padding:30px; text-align:center; }
+  .app-header h2 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(34px,5vw,52px); font-weight:900; letter-spacing:.04em; text-transform:uppercase; line-height:1; margin-bottom:10px; }
+  .app-header .subtitle { opacity:.9; font-size:1.1em; color:rgba(255,255,255,.78); }
+
+  .controls { padding:25px; background:#f8fafc; border-bottom:2px solid #e2e8f0; }
+  .search-box { width:100%; padding:13px 18px; font-size:16px; border:2px solid #cbd5e1; border-radius:8px; margin-bottom:20px; transition:border-color .3s; font-family:'Barlow',sans-serif; }
+  .search-box:focus { outline:none; border-color:var(--blue); box-shadow:0 0 0 3px rgba(26,111,255,.16); }
+  .filters, .level-filters { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:15px; }
+  .level-filters { margin-top:15px; margin-bottom:0; gap:8px; }
+  .filter-btn, .level-btn { padding:9px 16px; border:2px solid #cbd5e1; background:#fff; border-radius:999px; cursor:pointer; transition:.2s; font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#334155; }
+  .level-btn { font-size:13px; padding:8px 13px; }
+  .filter-btn:hover, .level-btn:hover { background:#f1f5f9; transform:translateY(-1px); }
+  .filter-btn.active, .level-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); box-shadow:0 8px 18px rgba(26,111,255,.22); }
+
+  .spell-count { text-align:center; padding:15px; background:#f1f5f9; font-family:'Barlow Condensed',sans-serif; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:#475569; }
+  .spells-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; padding:25px; }
+  .spell-card { border:2px solid #e2e8f0; border-radius:12px; padding:20px; transition:.25s; background:#fff; }
+  .spell-card:hover { box-shadow:0 10px 24px rgba(0,0,0,.12); transform:translateY(-2px); border-color:var(--blue); }
+  .spell-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; gap:12px; }
+  .spell-name { font-family:'Barlow Condensed',sans-serif; font-size:25px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; color:#1e293b; flex:1; line-height:1.05; }
+  .spell-level { background:var(--blue); color:#fff; padding:5px 11px; border-radius:999px; font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; white-space:nowrap; }
+  .spell-school { color:#64748b; font-size:.95em; font-style:italic; margin-bottom:10px; }
+  .spell-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+  .tag { background:#e0e7ff; color:#3730a3; padding:4px 10px; border-radius:10px; font-size:.75em; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+  .tag.attack { background:#fee2e2; color:#991b1b; }
+  .tag.buff { background:#dcfce7; color:#166534; }
+  .tag.debuff { background:#fef3c7; color:#92400e; }
+  .tag.heal { background:#dbeafe; color:#1e40af; }
+  .tag.utility { background:#f3e8ff; color:#6b21a8; }
+  .tag.control { background:#fce7f3; color:#9f1239; }
+  .spell-details { color:#475569; font-size:.95em; line-height:1.6; }
+  .spell-meta { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:12px; padding-top:12px; border-top:1px solid #e2e8f0; font-size:.85em; }
+  .meta-item { color:#64748b; }
+  .meta-label { font-weight:800; color:#334155; }
+  .no-results { text-align:center; padding:60px 20px; color:#64748b; font-size:1.2em; grid-column:1/-1; }
+
+  .reference-instructions { margin-top:18px; text-align:center; color:var(--white-dim); line-height:1.55; }
+  .reference-instructions strong { color:var(--white); font-size:18px; }
+  .reference-actions { margin-top:22px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--blue); color:#fff; border:0; border-radius:8px; padding:13px 22px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:.2s; }
+  .btn:hover { background:var(--blue-bright); transform:translateY(-1px); }
+  .btn-ghost { background:transparent; border:1px solid var(--navy-border); color:var(--white); }
+  .btn-ghost:hover { border-color:var(--blue); background:var(--blue-glow); color:var(--white); }
+
+  footer { background:var(--navy-mid); border-top:1px solid var(--navy-border); padding:26px 48px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,.42); font-size:13px; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+  .footer-links a { color:var(--white-dim); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .footer-links a:hover { color:var(--blue-light); }
+
+  @media (max-width:768px) {
+    header.site-header { padding:0 20px; } nav { display:none; } .header-logo-img { height:46px; }
+    .reference-shell { padding:16px; } .reference-frame { padding:12px; }
+    .spells-grid { grid-template-columns:1fr; padding:18px; }
+    .spell-meta { grid-template-columns:1fr; }
+    footer { padding:24px; }
+  }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <a href="../../index.html" class="logo"><img src="../../images/axton-logo.png" alt="Axton Enterprises" class="header-logo-img"></a>
+  <nav>
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">AE Hub</a>
+    <a href="./index.html" class="active">Reference</a>
+    <a href="#spells" class="nav-cta">Search Spells</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Axton Enterprises Reference Library</div>
+      <h1>⚡ Sorcerer <span>Spells</span></h1>
+      <p>Search and filter Dungeons & Dragons Fifth Edition Sorcerer spells by type, level, school, name, and description.</p>
+    </div>
+  </section>
+
+  <section class="reference-section" id="spells">
+    <div class="reference-shell">
+      <div class="reference-top">
+        <div>
+          <div class="reference-title">Sorcerer Spell Compendium</div>
+          <p class="reference-subtitle">A fast lookup tool for planning characters and running sessions.</p>
+        </div>
+        <div class="status-box">D&D 5e</div>
+      </div>
+
+      <div class="reference-frame">
+        <div class="app-container">
+          <div class="app-header">
+            <h2>⚡ Sorcerer Spell Compendium</h2>
+            <div class="subtitle">D&D 5th Edition</div>
+          </div>
+
+          <div class="controls">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search spells by name, school, or description...">
+
+            <div class="filters">
+              <button class="filter-btn active" data-filter="all">All Types</button>
+              <button class="filter-btn" data-filter="attack">Attack</button>
+              <button class="filter-btn" data-filter="buff">Buff</button>
+              <button class="filter-btn" data-filter="debuff">Debuff</button>
+              <button class="filter-btn" data-filter="heal">Heal</button>
+              <button class="filter-btn" data-filter="utility">Utility</button>
+              <button class="filter-btn" data-filter="control">Control</button>
+            </div>
+
+            <div class="level-filters">
+              <button class="level-btn active" data-level="all">All Levels</button>
+              <button class="level-btn" data-level="0">Cantrip</button>
+              <button class="level-btn" data-level="1">1st</button>
+              <button class="level-btn" data-level="2">2nd</button>
+              <button class="level-btn" data-level="3">3rd</button>
+              <button class="level-btn" data-level="4">4th</button>
+              <button class="level-btn" data-level="5">5th</button>
+              <button class="level-btn" data-level="6">6th</button>
+              <button class="level-btn" data-level="7">7th</button>
+              <button class="level-btn" data-level="8">8th</button>
+              <button class="level-btn" data-level="9">9th</button>
+            </div>
+          </div>
+
+          <div class="spell-count" id="spellCount"></div>
+          <div class="spells-grid" id="spellsGrid"></div>
+        </div>
+      </div>
+
+      <div class="reference-instructions">
+        <p><strong>Use the search bar for names, schools, and descriptions.</strong></p>
+        <p>Filter by spell purpose or level to narrow the list during gameplay.</p>
+      </div>
+      <div class="reference-actions">
+        <button type="button" class="btn" onclick="shareReference()">Share Reference</button>
+        <a href="./index.html" class="btn btn-ghost">Back to Spell Hub</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>© 2026 Axton Enterprises. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">AE Hub</a>
+    <a href="./index.html">Reference</a>
+  </div>
+</footer>
+
+<script>
+const spells = [
+            {
+                name: "Fire Bolt",
+                level: 0,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Hurl a mote of fire at a creature or object. Make a ranged spell attack. On hit, deals 1d10 fire damage. Damage increases at higher levels."
+            },
+            {
+                name: "Mage Armor",
+                level: 1,
+                school: "Abjuration",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a willing creature who isn't wearing armor. Base AC becomes 13 + Dex modifier. Lasts 8 hours."
+            },
+            {
+                name: "Shield",
+                level: 1,
+                school: "Abjuration",
+                tags: ["buff"],
+                castingTime: "1 reaction",
+                range: "Self",
+                description: "Cast when hit by an attack. Gain +5 AC until the start of your next turn, including against the triggering attack."
+            },
+            {
+                name: "Magic Missile",
+                level: 1,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create three glowing darts of magical force. Each dart hits automatically and deals 1d4+1 force damage. Create additional darts at higher levels."
+            },
+            {
+                name: "Chromatic Orb",
+                level: 1,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "90 feet",
+                description: "Hurl a 4-inch sphere of energy at a creature. Ranged spell attack dealing 3d8 damage. Choose acid, cold, fire, lightning, poison, or thunder."
+            },
+            {
+                name: "Mage Hand",
+                level: 0,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Create a spectral floating hand. Use action to control it to manipulate objects, open doors, or retrieve items. Can't attack or activate magical items."
+            },
+            {
+                name: "Prestidigitation",
+                level: 0,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "10 feet",
+                description: "Minor magical trick. Light/snuff candles, clean/soil items, chill/warm/flavor food, create harmless sensory effects, and more."
+            },
+            {
+                name: "Ray of Frost",
+                level: 0,
+                school: "Evocation",
+                tags: ["attack", "debuff"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Frigid beam at a creature. Ranged spell attack dealing 1d8 cold damage and reducing speed by 10 feet until start of your next turn."
+            },
+            {
+                name: "Shocking Grasp",
+                level: 0,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Lightning springs from your hand. Melee spell attack dealing 1d8 lightning damage. Advantage against targets in metal armor. Target can't take reactions."
+            },
+            {
+                name: "Light",
+                level: 0,
+                school: "Evocation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch an object no larger than 10 feet. Object sheds bright light in 20-foot radius and dim light for additional 20 feet. Lasts 1 hour."
+            },
+            {
+                name: "Burning Hands",
+                level: 1,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "Self (15-foot cone)",
+                description: "Thin sheet of flames shoots from outstretched hands. Each creature in cone makes Dex save or takes 3d6 fire damage, half on success."
+            },
+            {
+                name: "Charm Person",
+                level: 1,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Attempt to charm a humanoid within range. Target makes Wisdom save or is charmed for 1 hour. Aware when spell ends."
+            },
+            {
+                name: "Sleep",
+                level: 1,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "90 feet",
+                description: "Send creatures into magical slumber. Roll 5d8; total is how many hit points of creatures this spell can affect, starting with lowest HP."
+            },
+            {
+                name: "Thunderwave",
+                level: 1,
+                school: "Evocation",
+                tags: ["attack", "control"],
+                castingTime: "1 action",
+                range: "Self (15-foot cube)",
+                description: "Wave of thunderous force. Each creature in cube makes Con save or takes 2d8 thunder damage and is pushed 10 feet. Half damage on success."
+            },
+            {
+                name: "Disguise Self",
+                level: 1,
+                school: "Illusion",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Make yourself appear different including clothing, armor, weapons, and other belongings. Lasts 1 hour. Physical inspection reveals disguise."
+            },
+            {
+                name: "Detect Magic",
+                level: 1,
+                school: "Divination",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Sense magic within 30 feet. Can use action to see aura around visible magical object/creature and learn its school of magic. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Scorching Ray",
+                level: 2,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create three rays of fire. Make ranged spell attack for each ray. On hit, deals 2d6 fire damage. Create additional rays at higher levels."
+            },
+            {
+                name: "Mirror Image",
+                level: 2,
+                school: "Illusion",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Three illusory duplicates appear. Attacks against you may hit duplicates instead. Each duplicate destroyed when hit. Lasts 1 minute."
+            },
+            {
+                name: "Misty Step",
+                level: 2,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 bonus action",
+                range: "Self",
+                description: "Surrounded by silvery mist, teleport up to 30 feet to an unoccupied space you can see. Great for escaping or repositioning."
+            },
+            {
+                name: "Hold Person",
+                level: 2,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Choose a humanoid you can see. Target makes Wisdom save or is paralyzed for 1 minute (concentration). Can repeat save at end of each turn."
+            },
+            {
+                name: "Suggestion",
+                level: 2,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Suggest a course of activity to a creature. Target makes Wisdom save. On failure, pursues the course of action for up to 8 hours (concentration)."
+            },
+            {
+                name: "Invisibility",
+                level: 2,
+                school: "Illusion",
+                tags: ["utility", "buff"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a creature. Target becomes invisible for 1 hour (concentration). Ends if target attacks or casts a spell."
+            },
+            {
+                name: "Darkness",
+                level: 2,
+                school: "Evocation",
+                tags: ["utility", "control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Magical darkness spreads from a point in a 15-foot radius sphere. Darkvision can't penetrate it. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Levitate",
+                level: 2,
+                school: "Transmutation",
+                tags: ["utility", "control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "One creature or object rises vertically up to 20 feet. Can change altitude by 20 feet each turn. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Fireball",
+                level: 3,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Bright streak flashes to a point and explodes in 20-foot radius. Each creature makes Dex save or takes 8d6 fire damage, half on success."
+            },
+            {
+                name: "Lightning Bolt",
+                level: 3,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "Self (100-foot line)",
+                description: "Stroke of lightning forming 100-foot long, 5-foot wide line. Each creature makes Dex save or takes 8d6 lightning damage, half on success."
+            },
+            {
+                name: "Counterspell",
+                level: 3,
+                school: "Abjuration",
+                tags: ["control"],
+                castingTime: "1 reaction",
+                range: "60 feet",
+                description: "Interrupt a creature casting a spell. Spell of 3rd level or lower fails. For higher levels, make ability check (DC 10 + spell level)."
+            },
+            {
+                name: "Haste",
+                level: 3,
+                school: "Transmutation",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Target gains doubled speed, +2 AC, advantage on Dex saves, and extra action each turn. Lasts 1 minute (concentration). Lethargy when ends."
+            },
+            {
+                name: "Fly",
+                level: 3,
+                school: "Transmutation",
+                tags: ["buff", "utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a willing creature. Target gains flying speed of 60 feet. Lasts 10 minutes (concentration). Falls if spell ends while airborne."
+            },
+            {
+                name: "Hypnotic Pattern",
+                level: 3,
+                school: "Illusion",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Twisting pattern of colors weaves through 30-foot cube. Creatures make Wisdom save or become charmed and incapacitated. Ends if damaged."
+            },
+            {
+                name: "Fear",
+                level: 3,
+                school: "Illusion",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "Self (30-foot cone)",
+                description: "Project phantasmal image of worst fears. Each creature makes Wisdom save or drops what it's holding and becomes frightened. Lasts 1 minute."
+            },
+            {
+                name: "Dispel Magic",
+                level: 3,
+                school: "Abjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Choose a creature, object, or magical effect. Any spell of 3rd level or lower ends. For higher levels, make ability check (DC 10 + spell level)."
+            },
+            {
+                name: "Ice Storm",
+                level: 4,
+                school: "Evocation",
+                tags: ["attack", "control"],
+                castingTime: "1 action",
+                range: "300 feet",
+                description: "Hail falls in 20-foot radius, 40-foot high cylinder. Creatures make Dex save or take 2d8 bludgeoning and 4d6 cold damage. Area becomes difficult terrain."
+            },
+            {
+                name: "Greater Invisibility",
+                level: 4,
+                school: "Illusion",
+                tags: ["buff", "utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a creature. Target becomes invisible for 1 minute (concentration). Unlike normal invisibility, doesn't end when attacking or casting."
+            },
+            {
+                name: "Polymorph",
+                level: 4,
+                school: "Transmutation",
+                tags: ["control", "utility"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Transform a creature into a beast of CR equal to or less than target's level. Target's stats replaced by beast's. Lasts 1 hour (concentration)."
+            },
+            {
+                name: "Dimension Door",
+                level: 4,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "500 feet",
+                description: "Teleport yourself and one willing creature to a spot within range. Can bring objects as long as weight doesn't exceed carrying capacity."
+            },
+            {
+                name: "Banishment",
+                level: 4,
+                school: "Abjuration",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Attempt to send creature to another plane. Target makes Charisma save or is banished. Lasts 1 minute (concentration). Permanent if native to different plane."
+            },
+            {
+                name: "Wall of Fire",
+                level: 4,
+                school: "Evocation",
+                tags: ["attack", "control"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create wall of fire. One side deals 5d8 fire damage to creatures within 10 feet. Passing through wall deals same damage. Lasts 1 minute."
+            },
+            {
+                name: "Cone of Cold",
+                level: 5,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "Self (60-foot cone)",
+                description: "Blast of cold air erupts from your hands. Each creature in cone makes Constitution save or takes 8d8 cold damage, half on success."
+            },
+            {
+                name: "Telekinesis",
+                level: 5,
+                school: "Transmutation",
+                tags: ["control", "utility"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Gain ability to move or manipulate creatures or objects. Can move up to 1,000 pounds. Target can resist with Strength check. Lasts 10 minutes."
+            },
+            {
+                name: "Dominate Person",
+                level: 5,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Attempt to charm a humanoid. Target makes Wisdom save or is charmed and under your control. Can issue commands telepathically. Lasts 1 minute."
+            },
+            {
+                name: "Cloudkill",
+                level: 5,
+                school: "Conjuration",
+                tags: ["attack", "control"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create 20-foot radius sphere of poisonous fog. Creatures make Con save or take 5d8 poison damage. Cloud moves 10 feet away each turn. Lasts 10 minutes."
+            },
+            {
+                name: "Animate Objects",
+                level: 5,
+                school: "Transmutation",
+                tags: ["attack", "utility"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Bring objects to life. Choose up to ten nonmagical objects. Animated objects follow your commands. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Chain Lightning",
+                level: 6,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Lightning bolt arcs toward a target then leaps to up to three other targets. Each target makes Dex save or takes 10d8 lightning damage, half on success."
+            },
+            {
+                name: "Disintegrate",
+                level: 6,
+                school: "Transmutation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Thin green ray. Target makes Dex save or takes 10d6+40 force damage. If reduced to 0 HP, target disintegrates into fine gray dust."
+            },
+            {
+                name: "Sunbeam",
+                level: 6,
+                school: "Evocation",
+                tags: ["attack", "debuff"],
+                castingTime: "1 action",
+                range: "Self (60-foot line)",
+                description: "Beam of brilliant light flashes. Creatures make Con save or take 6d8 radiant damage and are blinded. Bonus action each turn to create new line."
+            },
+            {
+                name: "Globe of Invulnerability",
+                level: 6,
+                school: "Abjuration",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Self (10-foot radius)",
+                description: "Immobile barrier excludes all spell effects of 5th level or lower. Lasts 1 minute (concentration). Nothing can pass through barrier."
+            },
+            {
+                name: "True Seeing",
+                level: 6,
+                school: "Divination",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Gives willing creature truesight out to 120 feet. See in darkness, see invisible, detect illusions, see into Ethereal Plane. Lasts 1 hour."
+            },
+            {
+                name: "Delayed Blast Fireball",
+                level: 7,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Bead of light that explodes on timer or when touched. Starts at 12d6 fire damage, increases by 1d6 each round. Max 1 minute. 20-foot radius."
+            },
+            {
+                name: "Finger of Death",
+                level: 7,
+                school: "Necromancy",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Send negative energy to a creature. Target makes Constitution save or takes 7d8+30 necrotic damage, half on success. Humanoid killed rises as zombie."
+            },
+            {
+                name: "Plane Shift",
+                level: 7,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Transport yourself and up to eight willing creatures to different plane of existence. Can also banish unwilling creature with Charisma save."
+            },
+            {
+                name: "Reverse Gravity",
+                level: 7,
+                school: "Transmutation",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "100 feet",
+                description: "Reverse gravity in 50-foot radius, 100-foot high cylinder. Creatures and objects fall upward. When spell ends, they fall back down. Lasts 1 minute."
+            },
+            {
+                name: "Teleport",
+                level: 7,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "10 feet",
+                description: "Instantly transport yourself and up to eight willing creatures to destination you choose. Familiarity affects accuracy. Can bring objects."
+            },
+            {
+                name: "Earthquake",
+                level: 8,
+                school: "Evocation",
+                tags: ["attack", "control"],
+                castingTime: "1 action",
+                range: "500 feet",
+                description: "Create seismic disturbance in 100-foot radius. Ground becomes difficult terrain. Creatures make Dex save or knocked prone. Structures may collapse."
+            },
+            {
+                name: "Sunburst",
+                level: 8,
+                school: "Evocation",
+                tags: ["attack", "debuff"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Brilliant sunlight flashes in 60-foot radius. Creatures make Con save or take 12d6 radiant damage and are blinded for 1 minute. Half damage on success."
+            },
+            {
+                name: "Dominate Monster",
+                level: 8,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Attempt to charm any creature. Target makes Wisdom save or is charmed and under your control. Can issue commands telepathically. Lasts 1 hour."
+            },
+            {
+                name: "Power Word Stun",
+                level: 8,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Speak a word of power. If target has 150 HP or fewer, it is stunned. Can make Constitution save at end of each turn to end effect."
+            },
+            {
+                name: "Incendiary Cloud",
+                level: 8,
+                school: "Conjuration",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Swirling cloud of smoke shot through with embers in 20-foot radius sphere. Creatures make Dex save or take 10d8 fire damage. Lasts 1 minute."
+            },
+          {
+                name: "Meteor Swarm",
+                level: 9,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "1 mile",
+                description: "Blazing orbs of fire plummet to ground at four different points. Each creature in 40-foot radius makes Dex save or takes 20d6 fire and 20d6 bludgeoning damage."
+            },
+            {
+                name: "Wish",
+                level: 9,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "The mightiest spell. Can duplicate any spell of 8th level or lower, or create other effects at DM's discretion. May never cast Wish again after use."
+            },
+            {
+                name: "Time Stop",
+                level: 9,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Briefly stop time for everyone but yourself. Take 1d4+1 turns. Ends early if you affect another creature or target them with spell."
+            },
+            {
+                name: "Power Word Kill",
+                level: 9,
+                school: "Enchantment",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Utter a word of power to compel one creature to die. If target has 100 hit points or fewer, it dies instantly. Otherwise, no effect."
+            },
+            {
+                name: "Gate",
+                level: 9,
+                school: "Conjuration",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Create portal linking your location to precise location on different plane. Portal lasts 1 minute (concentration). Can summon specific creatures."
+            },
+            {
+                name: "Acid Splash",
+                level: 0,
+                school: "Conjuration",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Hurl a bubble of acid at one or two creatures within 5 feet of each other. Dex save or take 1d6 acid damage. Damage increases at higher levels."
+            },
+            {
+                name: "Blade Ward",
+                level: 0,
+                school: "Abjuration",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Extend your hand and trace a sigil. Gain resistance to bludgeoning, piercing, and slashing damage until the end of your next turn."
+            },
+            {
+                name: "Chill Touch",
+                level: 0,
+                school: "Necromancy",
+                tags: ["attack", "debuff"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Ghostly hand reaches out. Ranged spell attack dealing 1d8 necrotic damage. Target can't regain HP until start of your next turn. Undead have disadvantage on attacks."
+            },
+            {
+                name: "Dancing Lights",
+                level: 0,
+                school: "Evocation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create up to four torch-sized lights. Can combine into humanoid form. Each sheds dim light in 10-foot radius. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Friends",
+                level: 0,
+                school: "Enchantment",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "For duration, gain advantage on Charisma checks against one creature you choose. When spell ends, creature knows it was charmed and becomes hostile."
+            },
+            {
+                name: "Message",
+                level: 0,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Point toward a creature and whisper a message. Target hears message in its mind and can whisper a reply. Works through walls but blocked by magical silence."
+            },
+            {
+                name: "Minor Illusion",
+                level: 0,
+                school: "Illusion",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Create a sound or image of an object. Sound can be any volume. Image must fit in 5-foot cube. Lasts 1 minute. Investigation check reveals illusion."
+            },
+            {
+                name: "Poison Spray",
+                level: 0,
+                school: "Conjuration",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "10 feet",
+                description: "Extend hand and project puff of noxious gas. Target makes Constitution save or takes 1d12 poison damage. Damage increases at higher levels."
+            },
+            {
+                name: "True Strike",
+                level: 0,
+                school: "Divination",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Point at target and gain insight. On your next turn, gain advantage on first attack roll against the target. Lasts 1 round (concentration)."
+            },
+            {
+                name: "Chaos Bolt",
+                level: 1,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Hurl bolt of chaotic energy. Ranged spell attack dealing 2d8+1d6 damage. Type determined by d8 roll. If d8s match, bolt leaps to new target."
+            },
+            {
+                name: "False Life",
+                level: 1,
+                school: "Necromancy",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Bolster yourself with necromantic facsimile of life. Gain 1d4+4 temporary hit points. Lasts 1 hour."
+            },
+            {
+                name: "Fog Cloud",
+                level: 1,
+                school: "Conjuration",
+                tags: ["control", "utility"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create 20-foot radius sphere of fog centered on a point. Area is heavily obscured. Wind disperses the cloud. Lasts 1 hour (concentration)."
+            },
+            {
+                name: "Jump",
+                level: 1,
+                school: "Transmutation",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a creature. Target's jump distance is tripled for the duration. Lasts 1 minute."
+            },
+            {
+                name: "Feather Fall",
+                level: 1,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 reaction",
+                range: "60 feet",
+                description: "Choose up to five falling creatures. Targets' rate of descent slows to 60 feet per round. Land without taking falling damage. Lasts 1 minute."
+            },
+            {
+                name: "Color Spray",
+                level: 1,
+                school: "Illusion",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "Self (15-foot cone)",
+                description: "Dazzling array of colors. Roll 6d10; total is HP of creatures affected starting with lowest. Blinded until spell ends. Lasts 1 round."
+            },
+            {
+                name: "Silent Image",
+                level: 1,
+                school: "Illusion",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Create image of object, creature, or phenomenon. Image must fit in 15-foot cube. Can move image with action. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Expeditious Retreat",
+                level: 1,
+                school: "Transmutation",
+                tags: ["buff"],
+                castingTime: "1 bonus action",
+                range: "Self",
+                description: "Take Dash action as bonus action on each of your turns for duration. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Witch Bolt",
+                level: 1,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Beam of crackling energy. Ranged spell attack dealing 1d12 lightning damage. Use action on subsequent turns to deal 1d12 damage automatically. Lasts 1 minute."
+            },
+            {
+                name: "Alter Self",
+                level: 2,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Assume different form. Choose: Aquatic Adaptation, Change Appearance, or Natural Weapons. Lasts 1 hour (concentration)."
+            },
+            {
+                name: "Blindness/Deafness",
+                level: 2,
+                school: "Necromancy",
+                tags: ["debuff"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Strike creature blind or deaf. Target makes Constitution save or is blinded or deafened. Repeat save at end of each turn. Lasts 1 minute."
+            },
+            {
+                name: "Crown of Madness",
+                level: 2,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Twist crown of jagged iron on humanoid's head. Target makes Wisdom save or is charmed and must attack closest creature on its turn. Lasts 1 minute."
+            },
+            {
+                name: "Detect Thoughts",
+                level: 2,
+                school: "Divination",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Read thoughts of creatures within 30 feet. Can probe deeper with action, target makes Wisdom save. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Enhance Ability",
+                level: 2,
+                school: "Transmutation",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a creature and enhance it. Choose: Bear's Endurance, Bull's Strength, Cat's Grace, Eagle's Splendor, Fox's Cunning, or Owl's Wisdom. Lasts 1 hour."
+            },
+            {
+                name: "Enlarge/Reduce",
+                level: 2,
+                school: "Transmutation",
+                tags: ["buff", "debuff"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Make creature or object larger or smaller. Enlarge grants advantage on Strength. Reduce grants disadvantage. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Gust of Wind",
+                level: 2,
+                school: "Evocation",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "Self (60-foot line)",
+                description: "Strong wind blows from you. Creatures make Strength save or pushed 15 feet. Can use action to continue wind. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Shatter",
+                level: 2,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Sudden loud ringing in 10-foot radius. Creatures make Constitution save or take 3d8 thunder damage, half on success. Nonmagical objects shatter."
+            },
+            {
+                name: "Spider Climb",
+                level: 2,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a willing creature. Target gains ability to move up, down, and across vertical surfaces and ceilings while leaving hands free. Lasts 1 hour."
+            },
+            {
+                name: "Web",
+                level: 2,
+                school: "Conjuration",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Create mass of sticky webbing in 20-foot cube. Creatures make Dex save or restrained. Strength check to break free. Webs are flammable. Lasts 1 hour."
+            },
+            {
+                name: "Blink",
+                level: 3,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Self",
+                description: "Roll d20 at end of each turn. On 11+, vanish to Ethereal Plane and reappear at start of next turn. Lasts 1 minute."
+            },
+            {
+                name: "Clairvoyance",
+                level: 3,
+                school: "Divination",
+                tags: ["utility"],
+                castingTime: "10 minutes",
+                range: "1 mile",
+                description: "Create invisible sensor at familiar location. See or hear (not both) through sensor. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Daylight",
+                level: 3,
+                school: "Evocation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "60 feet",
+                description: "Sphere of light radiates from a point. Bright light in 60-foot radius, dim light for additional 60 feet. Dispels darkness spells. Lasts 1 hour."
+            },
+            {
+                name: "Enemies Abound",
+                level: 3,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Target makes Intelligence save or sees all creatures as enemies. Must attack nearest creature. Can repeat save when damaged. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Gaseous Form",
+                level: 3,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Transform willing creature and everything it's wearing into misty cloud. Fly speed 10 feet, resistance to nonmagical damage. Lasts 1 hour (concentration)."
+            },
+            {
+                name: "Major Image",
+                level: 3,
+                school: "Illusion",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Create image in 20-foot cube with sound, smell, and temperature. Can move image with action. Investigation reveals illusion. Lasts 10 minutes (concentration)."
+            },
+            {
+                name: "Protection from Energy",
+                level: 3,
+                school: "Abjuration",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch willing creature. Choose acid, cold, fire, lightning, or thunder. Target gains resistance to chosen damage type. Lasts 1 hour (concentration)."
+            },
+            {
+                name: "Sleet Storm",
+                level: 3,
+                school: "Conjuration",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Freezing rain and sleet fall in 40-foot tall, 20-foot radius cylinder. Area is heavily obscured and difficult terrain. Concentration checks have disadvantage."
+            },
+            {
+                name: "Slow",
+                level: 3,
+                school: "Transmutation",
+                tags: ["debuff"],
+                castingTime: "1 action",
+                range: "120 feet",
+                description: "Alter time for six creatures. Targets make Wisdom save or have speed halved, -2 AC, disadvantage on Dex saves, can't use reactions. Lasts 1 minute."
+            },
+            {
+                name: "Stinking Cloud",
+                level: 3,
+                school: "Conjuration",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "90 feet",
+                description: "Create 20-foot radius sphere of nauseating gas. Creatures make Constitution save at start of turn or lose action. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Tongues",
+                level: 3,
+                school: "Divination",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch a creature. Target understands any spoken language it hears and can speak any language it knows. Lasts 1 hour."
+            },
+            {
+                name: "Water Breathing",
+                level: 3,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Grant up to ten willing creatures ability to breathe underwater. Targets retain normal mode of respiration. Lasts 24 hours."
+            },
+            {
+                name: "Water Walk",
+                level: 3,
+                school: "Transmutation",
+                tags: ["utility"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Grant up to ten willing creatures ability to move across liquid surfaces as if they were solid ground. Lasts 1 hour."
+            },
+            {
+                name: "Blight",
+                level: 4,
+                school: "Necromancy",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "30 feet",
+                description: "Drain moisture and vitality from creature. Target makes Constitution save or takes 8d8 necrotic damage, half on success. Max damage against plants."
+            },
+            {
+                name: "Confusion",
+                level: 4,
+                school: "Enchantment",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "90 feet",
+                description: "Creatures in 10-foot radius make Wisdom save or can't take reactions and behavior determined by d10 roll each turn. Lasts 1 minute (concentration)."
+            },
+            {
+                name: "Stoneskin",
+                level: 4,
+                school: "Abjuration",
+                tags: ["buff"],
+                castingTime: "1 action",
+                range: "Touch",
+                description: "Touch willing creature. Target's flesh becomes hard as stone. Gain resistance to nonmagical bludgeoning, piercing, and slashing damage. Lasts 1 hour."
+            },
+            {
+                name: "Vitriolic Sphere",
+                level: 4,
+                school: "Evocation",
+                tags: ["attack"],
+                castingTime: "1 action",
+                range: "150 feet",
+                description: "Point and sphere of acid streaks to 20-foot radius. Creatures make Dex save or take 10d4 acid damage and 5d4 at end of next turn. Half damage on save."
+            },
+            {
+                name: "Watery Sphere",
+                level: 4,
+                school: "Conjuration",
+                tags: ["control"],
+                castingTime: "1 action",
+                range: "90 feet",
+                description: "Create 10-foot radius sphere of water. Creatures make Strength save or restrained. Can move sphere 30 feet each turn. Lasts 1 minute (concentration)."
+            }
+        ];
+
+        let currentFilter = 'all';
+        let currentLevel = 'all';
+        let searchTerm = '';
+
+        function renderSpells() {
+            const filteredSpells = spells.filter(spell => {
+                const matchesFilter = currentFilter === 'all' || spell.tags.includes(currentFilter);
+                const matchesLevel = currentLevel === 'all' || spell.level === parseInt(currentLevel);
+                const matchesSearch = spell.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    spell.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                    spell.school.toLowerCase().includes(searchTerm.toLowerCase());
+                return matchesFilter && matchesLevel && matchesSearch;
+            });
+
+            const grid = document.getElementById('spellsGrid');
+            const countEl = document.getElementById('spellCount');
+
+            countEl.textContent = `Showing ${filteredSpells.length} spell${filteredSpells.length !== 1 ? 's' : ''}`;
+
+            if (filteredSpells.length === 0) {
+                grid.innerHTML = '<div class="no-results">No spells found matching your criteria</div>';
+                return;
+            }
+
+            grid.innerHTML = filteredSpells.map(spell => `
+                <div class="spell-card">
+                    <div class="spell-header">
+                        <div class="spell-name">${spell.name}</div>
+                        <div class="spell-level">${spell.level === 0 ? 'Cantrip' : `Level ${spell.level}`}</div>
+                    </div>
+                    <div class="spell-school">${spell.school}</div>
+                    <div class="spell-tags">
+                        ${spell.tags.map(tag => `<span class="tag ${tag}">${tag}</span>`).join('')}
+                    </div>
+                    <div class="spell-details">${spell.description}</div>
+                    <div class="spell-meta">
+                        <div class="meta-item"><span class="meta-label">Casting Time:</span> ${spell.castingTime}</div>
+                        <div class="meta-item"><span class="meta-label">Range:</span> ${spell.range}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Search functionality
+        document.getElementById('searchBox').addEventListener('input', (e) => {
+            searchTerm = e.target.value;
+            renderSpells();
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderSpells();
+            });
+        });
+
+        // Level buttons
+        document.querySelectorAll('.level-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentLevel = btn.dataset.level;
+                renderSpells();
+            });
+        });
+
+        // Initial render
+        renderSpells();
+
+function shareReference() {
+  const text = 'Check out the 5e Sorcerer Spells reference by Axton Enterprises.';
+  const url = window.location.href;
+
+  if (navigator.share) {
+    navigator.share({
+      title: '5e Sorcerer Spells',
+      text,
+      url
+    }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+      alert('Reference link copied to clipboard!');
+    }).catch(() => {
+      alert(`${text} ${url}`);
+    });
+  } else {
+    alert(`${text} ${url}`);
+  }
+}
+</script>
+</body>
+</html>
