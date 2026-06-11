@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Office Battle | Axton Enterprises</title>
+<meta name="description" content="Play Office Battle by Axton Enterprises. Defeat office crises with your team of workplace champions.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --navy:#0a0f1e; --navy-mid:#111827; --navy-card:#131c2e; --navy-border:#1e2d47;
+    --blue:#1a6fff; --blue-bright:#2d7fff; --blue-light:#4e9bff; --blue-glow:rgba(26,111,255,0.18);
+    --white:#fff; --white-dim:rgba(255,255,255,0.7); --white-faint:rgba(255,255,255,0.12); --gold:#f0c040;
+  }
+  html, body { background:var(--navy); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; overflow-x:hidden; }
+  header { background:rgba(10,15,30,.92); border-bottom:1px solid var(--navy-border); padding:0 48px; display:flex; align-items:center; justify-content:space-between; height:80px; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+  .logo { display:flex; align-items:center; text-decoration:none; }
+  .header-logo-img { height:58px; width:auto; display:block; object-fit:contain; }
+  nav { display:flex; align-items:center; gap:8px; }
+  nav a { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; padding:8px 16px; border-radius:6px; transition:.2s; }
+  nav a:hover, nav a.active { color:var(--white); background:var(--white-faint); }
+  .nav-cta { background:var(--blue)!important; color:#fff!important; border-radius:8px!important; padding:10px 20px!important; }
+  .hero { position:relative; padding:72px 24px 34px; text-align:center; overflow:hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 20%, rgba(26,111,255,.22), transparent 55%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:1; max-width:900px; margin:0 auto; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:16px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(46px,7vw,82px); font-weight:900; letter-spacing:.03em; text-transform:uppercase; line-height:.95; margin-bottom:16px; }
+  h1 span { color:var(--blue); }
+  .hero p { color:var(--white-dim); font-size:17px; line-height:1.6; max-width:680px; margin:0 auto; }
+  .game-section { padding:32px 24px 80px; }
+  .game-shell { max-width:980px; margin:0 auto; background:var(--navy-card); border:1px solid var(--navy-border); border-radius:20px; padding:26px; box-shadow:0 24px 64px rgba(0,0,0,.45); }
+  .game-top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+  .game-title { font-family:'Barlow Condensed',sans-serif; font-size:30px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--white); }
+  .game-subtitle { color:var(--white-dim); margin-top:4px; font-size:14px; }
+  .score-box { font-family:'Barlow Condensed',sans-serif; font-size:25px; font-weight:800; color:var(--blue-light); letter-spacing:.05em; }
+  .battle-frame { border:4px solid var(--blue); border-radius:16px; padding:18px; background:linear-gradient(180deg, rgba(26,111,255,.08), rgba(26,111,255,.03)); box-shadow:0 0 0 1px rgba(78,155,255,.35), 0 0 34px rgba(26,111,255,.24); }
+  .battle-frame .bg-white { background:rgba(255,255,255,.96)!important; }
+  .battle-frame .fixed { color:#111827; }
+  .game-instructions { margin-top:18px; text-align:center; color:var(--white-dim); line-height:1.55; }
+  .game-instructions strong { color:var(--white); font-size:18px; }
+  .game-actions { margin-top:22px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--blue); color:#fff; border:0; border-radius:8px; padding:13px 22px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:.2s; }
+  .btn:hover { background:var(--blue-bright); transform:translateY(-1px); }
+  .btn-ghost { background:transparent; border:1px solid var(--navy-border); color:var(--white); }
+  .btn-ghost:hover { border-color:var(--blue); background:var(--blue-glow); color:var(--white); }
+  .idea-section { max-width:980px; margin:28px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .info-card, .idea-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:18px; padding:28px; }
+  .section-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:12px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:34px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; line-height:1; margin-bottom:12px; }
+  .section-title span { color:var(--blue); }
+  .info-card p, .idea-card p { color:var(--white-dim); line-height:1.6; font-size:15px; }
+  .idea-form { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .idea-form label { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue-light); display:block; margin-bottom:6px; }
+  .idea-form input, .idea-form textarea { width:100%; background:rgba(255,255,255,.05); border:1px solid var(--navy-border); border-radius:8px; color:var(--white); font-family:'Barlow',sans-serif; font-size:15px; padding:12px 13px; outline:none; }
+  .idea-form textarea { min-height:120px; resize:vertical; }
+  .idea-form input:focus, .idea-form textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-glow); }
+  footer { background:var(--navy-mid); border-top:1px solid var(--navy-border); padding:26px 48px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,.42); font-size:13px; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+  .footer-links a { color:var(--white-dim); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .footer-links a:hover { color:var(--blue-light); }
+  @media (max-width:768px) {
+    header { padding:0 20px; } nav { display:none; } .header-logo-img { height:46px; }
+    .game-shell { padding:16px; } .battle-frame { padding:10px; } .idea-section { grid-template-columns:1fr; } footer { padding:24px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="../../../index.html" class="logo"><img src="../../../images/axton-logo.png" alt="Axton Enterprises" class="header-logo-img"></a>
+  <nav>
+    <a href="../../../index.html">Home</a>
+    <a href="../../index.html">AE Hub</a>
+    <a href="../index.html" class="active">Games</a>
+    <a href="#submit-idea" class="nav-cta">Submit Idea</a>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Axton Enterprises Game Lab</div>
+      <h1>💼 Office <span>Battle</span></h1>
+      <p>A turn-based workplace RPG. Build your team, defeat office crises, and survive the corporate chaos.</p>
+    </div>
+  </section>
+  <section class="game-section">
+    <div id="root"></div>
+    <div class="idea-section" id="submit-idea">
+      <div class="info-card">
+        <div class="section-label">Share Link</div>
+        <h2 class="section-title">Challenge <span>Someone</span></h2>
+        <p>Use the Share Game button to send Office Battle to friends or copy the current page link.</p>
+      </div>
+      <div class="idea-card">
+        <div class="section-label">Game Ideas</div>
+        <h2 class="section-title">Submit a <span>Game Idea</span></h2>
+        <p>Have an idea for the next Axton game? Send the concept and we’ll review it.</p>
+        <form class="idea-form" action="mailto:info@axton.enterprises" method="post" enctype="text/plain">
+          <div><label for="name">Name</label><input id="name" name="Name" type="text" required></div>
+          <div><label for="email">Email</label><input id="email" name="Email" type="email" required></div>
+          <div><label for="idea">Game Idea</label><textarea id="idea" name="Game Idea" required></textarea></div>
+          <button class="btn" type="submit">Send Game Idea</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div>© 2026 Axton Enterprises. All rights reserved.</div>
+  <div class="footer-links"><a href="../../../index.html">Home</a><a href="../../index.html">AE Hub</a><a href="../index.html">Games</a></div>
+</footer>
+
+<script type="text/babel">
+const { useState } = React;
+
+        const OfficeBattle = () => {
+            const enemies = [
+                { name: "Budget", icon: "🧾", hp: 30, attacks: [
+                    { name: "Spreadsheet Error", damage: 6 },
+                    { name: "Missing Receipt", damage: 8 },
+                    { name: "Audit Request", damage: 10 }
+                ]},
+                { name: "Middle Manager", icon: "👔", hp: 35, attacks: [
+                    { name: "Micromanage", damage: 7 },
+                    { name: "Status Update Request", damage: 8 },
+                    { name: "Synergy Speech", damage: 9 }
+                ]},
+                { name: "Team Meeting", icon: "📅", hp: 40, attacks: [
+                    { name: "Could've Been an Email", damage: 6 },
+                    { name: "Going Around the Room", damage: 9 },
+                    { name: "No Clear Agenda", damage: 11 }
+                ]},
+                { name: "TPS Report", icon: "📋", hp: 28, attacks: [
+                    { name: "Missing Cover Sheet", damage: 7 },
+                    { name: "Wrong Format", damage: 8 },
+                    { name: "Needs Revision", damage: 9 }
+                ]}
+            ];
+
+            const initialTeam = [
+                { 
+                    name: "Jen from Accounting", 
+                    icon: "👩‍💻", 
+                    maxHP: 40,
+                    hp: 40,
+                    specialUsed: false,
+                    defeatMessage: "The numbers aren't matching",
+                    attacks: [
+                        { name: "Data Entry", damage: 5 },
+                        { name: "Pivot Table", damage: 25, special: true }
+                    ]
+                },
+                { 
+                    name: "Frank the IT Guy", 
+                    icon: "🦎", 
+                    maxHP: 45,
+                    hp: 45,
+                    specialUsed: false,
+                    defeatMessage: "Have you seen my gecko?",
+                    attacks: [
+                        { name: "Turn It Off and On", damage: 6 },
+                        { name: "Deploy Firewall", damage: 28, special: true }
+                    ]
+                },
+                { 
+                    name: "Trent from Sales", 
+                    icon: "📞", 
+                    maxHP: 38,
+                    hp: 38,
+                    specialUsed: false,
+                    defeatMessage: "*bbrrrnnngg* got to take this call!",
+                    attacks: [
+                        { name: "Cold Call", damage: 5 },
+                        { name: "Close the Deal", damage: 26, special: true }
+                    ]
+                },
+                { 
+                    name: "Jerry from Facilities", 
+                    icon: "🔧", 
+                    maxHP: 50,
+                    hp: 50,
+                    specialUsed: false,
+                    defeatMessage: "I'm going to have to order a part",
+                    attacks: [
+                        { name: "Fix the AC", damage: 4 },
+                        { name: "Emergency Maintenance", damage: 24, special: true }
+                    ]
+                }
+            ];
+
+            const [currentEnemyIndex, setCurrentEnemyIndex] = useState(0);
+            const [defeatedEnemies, setDefeatedEnemies] = useState([]);
+            const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
+            const [team, setTeam] = useState(initialTeam);
+            const [enemyHP, setEnemyHP] = useState(enemies[0].hp);
+            const [message, setMessage] = useState(`A wild ${enemies[0].name} appears!`);
+            const [isPlayerTurn, setIsPlayerTurn] = useState(true);
+            const [gameOver, setGameOver] = useState(false);
+            const [showPopup, setShowPopup] = useState(true);
+            const [showAttackPopup, setShowAttackPopup] = useState(false);
+            const [showTeamSelect, setShowTeamSelect] = useState(false);
+            const [switchingPlayer, setSwitchingPlayer] = useState(false);
+            const [allEnemiesDefeated, setAllEnemiesDefeated] = useState(false);
+
+            const currentEnemy = enemies[currentEnemyIndex];
+            const currentPlayer = team[currentPlayerIndex];
+
+            const shareGame = () => {
+                const text = "Try Office Battle by Axton Enterprises.";
+                const url = window.location.href;
+
+                if (navigator.share) {
+                    navigator.share({
+                        title: "Office Battle",
+                        text,
+                        url
+                    }).catch(() => {});
+                } else if (navigator.clipboard) {
+                    navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+                        alert("Game link copied to clipboard!");
+                    }).catch(() => {
+                        alert(`${text} ${url}`);
+                    });
+                } else {
+                    alert(`${text} ${url}`);
+                }
+            };
+
+            const playerAttack = (damage, attackName, isSpecial) => {
+                if (!isPlayerTurn || gameOver) return;
+                
+                const newEnemyHP = Math.max(0, enemyHP - damage);
+                setEnemyHP(newEnemyHP);
+                setMessage(`${currentPlayer.name} used ${attackName}! Dealt ${damage} damage!`);
+                setShowAttackPopup(true);
+                
+                if (isSpecial) {
+                    const updatedTeam = [...team];
+                    updatedTeam[currentPlayerIndex] = { ...updatedTeam[currentPlayerIndex], specialUsed: true };
+                    setTeam(updatedTeam);
+                }
+                
+                if (newEnemyHP <= 0) {
+                    setTimeout(() => {
+                        setShowAttackPopup(false);
+                        const newDefeatedEnemies = [...defeatedEnemies, currentEnemyIndex];
+                        setDefeatedEnemies(newDefeatedEnemies);
+                        
+                        if (newDefeatedEnemies.length === enemies.length) {
+                            setMessage("All Crises Defeated! Victory!");
+                            setAllEnemiesDefeated(true);
+                            setGameOver(true);
+                            setShowPopup(true);
+                        } else {
+                            setMessage("Crisis Defeated!");
+                            setGameOver(true);
+                            setShowPopup(true);
+                        }
+                    }, 1500);
+                    return;
+                }
+                
+                setIsPlayerTurn(false);
+                setTimeout(() => {
+                    setShowAttackPopup(false);
+                    enemyAttack();
+                }, 1500);
+            };
+
+            const enemyAttack = () => {
+                const attack = currentEnemy.attacks[Math.floor(Math.random() * currentEnemy.attacks.length)];
+                const newPlayerHP = Math.max(0, team[currentPlayerIndex].hp - attack.damage);
+                
+                const updatedTeam = [...team];
+                updatedTeam[currentPlayerIndex] = { ...updatedTeam[currentPlayerIndex], hp: newPlayerHP };
+                setTeam(updatedTeam);
+                
+                setMessage(`${currentEnemy.name} used ${attack.name}! Dealt ${attack.damage} damage!`);
+                setShowAttackPopup(true);
+                
+                if (newPlayerHP <= 0) {
+                    setTimeout(() => {
+                        setShowAttackPopup(false);
+                        setMessage(currentPlayer.defeatMessage);
+                        setShowAttackPopup(true);
+                        
+                        const aliveMembers = updatedTeam.filter(member => member.hp > 0);
+                        if (aliveMembers.length === 0) {
+                            setTimeout(() => {
+                                setShowAttackPopup(false);
+                                setMessage("Please sign this Performance Improvement Plan!");
+                                setGameOver(true);
+                                setShowPopup(true);
+                            }, 1500);
+                        } else {
+                            setTimeout(() => {
+                                setShowAttackPopup(false);
+                                const nextAliveIndex = updatedTeam.findIndex(member => member.hp > 0);
+                                setCurrentPlayerIndex(nextAliveIndex);
+                                setMessage(`${updatedTeam[nextAliveIndex].name} steps in!`);
+                                setShowAttackPopup(true);
+                                setTimeout(() => {
+                                    setShowAttackPopup(false);
+                                    setMessage(`What will ${updatedTeam[nextAliveIndex].name} do?`);
+                                    setIsPlayerTurn(true);
+                                }, 1500);
+                            }, 1500);
+                        }
+                    }, 1500);
+                    return;
+                }
+                
+                setTimeout(() => {
+                    setShowAttackPopup(false);
+                    setMessage(`What will ${currentPlayer.name} do?`);
+                    setIsPlayerTurn(true);
+                }, 1500);
+            };
+
+            const nextBattle = () => {
+                let nextEnemyIndex = (currentEnemyIndex + 1) % enemies.length;
+                while (defeatedEnemies.includes(nextEnemyIndex) && defeatedEnemies.length < enemies.length) {
+                    nextEnemyIndex = (nextEnemyIndex + 1) % enemies.length;
+                }
+                
+                setCurrentEnemyIndex(nextEnemyIndex);
+                setEnemyHP(enemies[nextEnemyIndex].hp);
+                setMessage(`A wild ${enemies[nextEnemyIndex].name} appears!`);
+                setIsPlayerTurn(true);
+                setGameOver(false);
+                setShowPopup(true);
+                setShowAttackPopup(false);
+            };
+
+            const resetGame = () => {
+                setTeam(initialTeam);
+                setCurrentEnemyIndex(0);
+                setDefeatedEnemies([]);
+                setCurrentPlayerIndex(0);
+                setEnemyHP(enemies[0].hp);
+                setMessage(`A wild ${enemies[0].name} appears!`);
+                setIsPlayerTurn(true);
+                setGameOver(false);
+                setShowPopup(true);
+                setShowAttackPopup(false);
+                setAllEnemiesDefeated(false);
+            };
+
+            const selectTeamMember = (index) => {
+                if (team[index].hp <= 0) return;
+                
+                setCurrentPlayerIndex(index);
+                setShowTeamSelect(false);
+                
+                if (switchingPlayer) {
+                    setMessage(`Switched to ${team[index].name}!`);
+                    setShowAttackPopup(true);
+                    setSwitchingPlayer(false);
+                    setIsPlayerTurn(false);
+                    setTimeout(() => {
+                        setShowAttackPopup(false);
+                        enemyAttack();
+                    }, 1500);
+                } else {
+                    setShowPopup(true);
+                }
+            };
+
+            const openTeamSelect = () => {
+                setSwitchingPlayer(true);
+                setShowTeamSelect(true);
+            };
+
+            const closePopup = () => {
+                if (allEnemiesDefeated) {
+                    resetGame();
+                } else if (gameOver) {
+                    nextBattle();
+                } else {
+                    setShowPopup(false);
+                    setMessage(`What will ${currentPlayer.name} do?`);
+                }
+            };
+
+            return (
+                <div className="game-shell">
+                    <div className="game-top">
+                        <div>
+                            <div className="game-title">Office Battle</div>
+                            <p className="game-subtitle">Defeat office crises with your team of workplace champions.</p>
+                        </div>
+                        <div className="score-box">Crisis {defeatedEnemies.length}/{enemies.length}</div>
+                    </div>
+                    <div className="battle-frame">
+                        <div className="max-w-3xl w-full mx-auto">
+
+                        {showTeamSelect && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div className="bg-white rounded-lg p-8 shadow-2xl max-w-2xl">
+                                    <h2 className="text-2xl font-bold text-center mb-6">
+                                        {switchingPlayer ? "Switch to..." : "Choose Your Champion"}
+                                    </h2>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {team.map((member, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => selectTeamMember(index)}
+                                                disabled={member.hp <= 0}
+                                                className={`${member.hp <= 0 ? 'bg-gray-200 opacity-50 cursor-not-allowed' : 'bg-blue-50 hover:bg-blue-100'} border-2 border-blue-300 rounded-lg p-4 transition-all transform hover:scale-105 disabled:transform-none`}
+                                            >
+                                                <div className="text-5xl mb-2">{member.icon}</div>
+                                                <div className="font-bold text-sm">{member.name}</div>
+                                                <div className="text-xs text-gray-600">HP: {member.hp}/{member.maxHP}</div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                    {switchingPlayer && (
+                                        <button
+                                            onClick={() => {
+                                                setShowTeamSelect(false);
+                                                setSwitchingPlayer(false);
+                                            }}
+                                            className="w-full mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg"
+                                        >
+                                            Cancel
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        )}
+
+                        {showPopup && !showTeamSelect && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div className="bg-white rounded-lg p-8 shadow-2xl max-w-md">
+                                    <p className="text-2xl font-bold text-center mb-6">{message}</p>
+                                    <button
+                                        onClick={closePopup}
+                                        className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg"
+                                    >
+                                        {allEnemiesDefeated ? "Play Again" : gameOver ? "Next Battle" : "Let's Battle!"}
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {showAttackPopup && (
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div className="bg-white rounded-lg p-8 shadow-2xl max-w-md">
+                                    <p className="text-xl font-bold text-center">{message}</p>
+                                </div>
+                            </div>
+                        )}
+                        
+                        <div className="mb-6">
+                            <div className="flex justify-start mb-4">
+                                <div className="bg-white rounded-lg p-4 shadow-lg">
+                                    <h2 className="text-xl font-bold text-red-600 mb-3 text-center">{currentEnemy.name}</h2>
+                                    <div className="border-4 border-red-400 rounded-lg p-6 bg-red-50 mb-3">
+                                        <div className="text-6xl">{currentEnemy.icon}</div>
+                                    </div>
+                                    <div className="w-40">
+                                        <div className="text-xs font-bold mb-1 text-gray-700">HP</div>
+                                        <div className="w-full bg-gray-200 rounded-full h-5">
+                                            <div 
+                                                className="bg-red-500 h-5 rounded-full transition-all duration-500 flex items-center justify-center text-white text-xs font-bold"
+                                                style={{ width: `${(enemyHP / currentEnemy.hp) * 100}%` }}
+                                            >
+                                                {enemyHP > 0 && `${enemyHP}/${currentEnemy.hp}`}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="text-5xl font-bold text-gray-400 text-center mb-4">VS</div>
+
+                            <div className="flex justify-end">
+                                <div className="bg-white rounded-lg p-4 shadow-lg">
+                                    <div className="flex items-center justify-between mb-3">
+                                        <h2 className="text-xl font-bold text-blue-600 text-center flex-1">{currentPlayer.name}</h2>
+                                        <button
+                                            onClick={openTeamSelect}
+                                            className="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded ml-2"
+                                            disabled={!isPlayerTurn || gameOver}
+                                        >
+                                            Switch
+                                        </button>
+                                    </div>
+                                    <div className="border-4 border-blue-400 rounded-lg p-6 bg-blue-50 mb-3">
+                                        <div className="text-6xl">{currentPlayer.icon}</div>
+                                    </div>
+                                    <div className="w-40">
+                                        <div className="text-xs font-bold mb-1 text-gray-700">HP</div>
+                                        <div className="w-full bg-gray-200 rounded-full h-5">
+                                            <div 
+                                                className="bg-green-500 h-5 rounded-full transition-all duration-500 flex items-center justify-center text-white text-xs font-bold"
+                                                style={{ width: `${(currentPlayer.hp / currentPlayer.maxHP) * 100}%` }}
+                                            >
+                                                {currentPlayer.hp > 0 && `${currentPlayer.hp}/${currentPlayer.maxHP}`}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-white rounded-lg p-4 shadow-lg">
+                            <h3 className="text-xl font-bold text-gray-800 mb-3">Skills</h3>
+                            
+                            <div className="grid grid-cols-2 gap-3">
+                                <button
+                                    onClick={() => playerAttack(currentPlayer.attacks[0].damage, currentPlayer.attacks[0].name, false)}
+                                    disabled={!isPlayerTurn || gameOver}
+                                    className="bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105 disabled:transform-none"
+                                >
+                                    {currentPlayer.attacks[0].name}
+                                    <div className="text-xs">{currentPlayer.attacks[0].damage} damage</div>
+                                </button>
+                                
+                                <button
+                                    onClick={() => playerAttack(currentPlayer.attacks[1].damage, currentPlayer.attacks[1].name, true)}
+                                    disabled={!isPlayerTurn || currentPlayer.specialUsed || gameOver}
+                                    className="bg-purple-500 hover:bg-purple-600 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition-all transform hover:scale-105 disabled:transform-none flex flex-col items-center justify-center"
+                                >
+                                    <div className="flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                        <span>{currentPlayer.attacks[1].name}</span>
+                                    </div>
+                                    <div className="text-xs">{currentPlayer.attacks[1].damage} damage {currentPlayer.specialUsed ? "(Used!)" : "(One use!)"}</div>
+                                </button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div className="game-instructions">
+                        <p><strong>Choose your skill, survive each crisis, and rotate team members when needed.</strong></p>
+                        <p>Special skills are powerful but can only be used once per teammate.</p>
+                    </div>
+                    <div className="game-actions">
+                        <button id="shareButton" type="button" className="btn" onClick={shareGame}>Share Game</button>
+                        <a href="../index.html" className="btn btn-ghost">More Games</a>
+                    </div>
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<OfficeBattle />);
+</script>
+</body>
+</html>
