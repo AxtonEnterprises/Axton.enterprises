@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pictionary Prompt Generator | Axton Enterprises</title>
+<meta name="description" content="Use the Pictionary Prompt Generator by Axton Enterprises. Choose a difficulty, generate a prompt, and start a timer for game night.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --navy:#0a0f1e; --navy-mid:#111827; --navy-card:#131c2e; --navy-border:#1e2d47;
+    --blue:#1a6fff; --blue-bright:#2d7fff; --blue-light:#4e9bff; --blue-glow:rgba(26,111,255,0.18);
+    --white:#fff; --white-dim:rgba(255,255,255,0.7); --white-faint:rgba(255,255,255,0.12); --gold:#f0c040;
+  }
+  html, body { background:var(--navy); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; overflow-x:hidden; }
+  header { background:rgba(10,15,30,.92); border-bottom:1px solid var(--navy-border); padding:0 48px; display:flex; align-items:center; justify-content:space-between; height:80px; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+  .logo { display:flex; align-items:center; text-decoration:none; }
+  .header-logo-img { height:58px; width:auto; display:block; object-fit:contain; }
+  nav { display:flex; align-items:center; gap:8px; }
+  nav a { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; padding:8px 16px; border-radius:6px; transition:.2s; }
+  nav a:hover, nav a.active { color:var(--white); background:var(--white-faint); }
+  .nav-cta { background:var(--blue)!important; color:#fff!important; border-radius:8px!important; padding:10px 20px!important; }
+  .hero { position:relative; padding:72px 24px 34px; text-align:center; overflow:hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 20%, rgba(26,111,255,.22), transparent 55%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:1; max-width:900px; margin:0 auto; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:16px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(46px,7vw,82px); font-weight:900; letter-spacing:.03em; text-transform:uppercase; line-height:.95; margin-bottom:16px; }
+  h1 span { color:var(--blue); }
+  .hero p { color:var(--white-dim); font-size:17px; line-height:1.6; max-width:680px; margin:0 auto; }
+  .game-section { padding:32px 24px 80px; }
+  .game-shell { max-width:980px; margin:0 auto; background:var(--navy-card); border:1px solid var(--navy-border); border-radius:20px; padding:26px; box-shadow:0 24px 64px rgba(0,0,0,.45); }
+  .game-top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+  .game-title { font-family:'Barlow Condensed',sans-serif; font-size:30px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--white); }
+  .game-subtitle { color:var(--white-dim); margin-top:4px; font-size:14px; }
+  .score-box { font-family:'Barlow Condensed',sans-serif; font-size:25px; font-weight:800; color:var(--blue-light); letter-spacing:.05em; }
+  .generator-frame { border:4px solid var(--blue); border-radius:16px; padding:24px; background:linear-gradient(180deg, rgba(26,111,255,.08), rgba(26,111,255,.03)); box-shadow:0 0 0 1px rgba(78,155,255,.35), 0 0 34px rgba(26,111,255,.24); }
+  .generator-panel { max-width:640px; margin:0 auto; background:rgba(255,255,255,.96); color:#111827; border-radius:18px; padding:28px; box-shadow:0 18px 50px rgba(0,0,0,.28); }
+  .section { margin-bottom:24px; }
+  .generator-panel label { display:block; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#1f2937; margin-bottom:10px; }
+  .difficulty-buttons { display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; }
+  .difficulty-btn { padding:13px 12px; border:1px solid #d1d5db; border-radius:10px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; cursor:pointer; transition:.2s; background:#eef2f7; color:#374151; }
+  .difficulty-btn:hover { transform:translateY(-1px); background:#dbe4f0; }
+  .difficulty-btn.active { background:var(--blue); color:#fff; border-color:var(--blue); box-shadow:0 8px 18px rgba(26,111,255,.28); }
+  input[type="number"] { width:100%; padding:13px 14px; border:2px solid #d1d5db; border-radius:10px; font-size:16px; outline:none; }
+  input[type="number"]:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(26,111,255,.16); }
+  .generate-btn, .timer-btn, .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--blue); color:#fff; border:0; border-radius:8px; padding:13px 22px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:.2s; }
+  .generate-btn { width:100%; font-size:17px; padding:15px 22px; }
+  .generate-btn:hover, .timer-btn:hover, .btn:hover { background:var(--blue-bright); transform:translateY(-1px); }
+  .timer-btn.reset, .btn-ghost { background:transparent; border:1px solid var(--navy-border); color:var(--white); }
+  .timer-btn.reset { color:#374151; border-color:#d1d5db; }
+  .timer-btn.reset:hover { background:#eef2f7; }
+  .word-display { background:linear-gradient(135deg,#eaf2ff,#dbeafe); border:1px solid #bfdbfe; border-radius:14px; padding:28px; text-align:center; display:none; }
+  .word-display.visible { display:block; }
+  .word-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; color:#1d4ed8; margin-bottom:8px; }
+  .word { font-family:'Barlow Condensed',sans-serif; font-size:clamp(40px,7vw,64px); font-weight:900; color:#111827; line-height:1; }
+  .timer-display { background:#f3f4f6; border-radius:14px; padding:24px; display:none; }
+  .timer-display.visible { display:block; }
+  .timer { text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:72px; font-weight:900; color:#111827; margin-bottom:14px; line-height:1; }
+  .timer.warning { color:#dc2626; }
+  .timer-controls { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .icon { width:20px; height:20px; }
+  .game-instructions { margin-top:18px; text-align:center; color:var(--white-dim); line-height:1.55; }
+  .game-instructions strong { color:var(--white); font-size:18px; }
+  .game-actions { margin-top:22px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+  .btn-ghost:hover { border-color:var(--blue); background:var(--blue-glow); color:var(--white); }
+  .idea-section { max-width:980px; margin:28px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .info-card, .idea-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:18px; padding:28px; }
+  .section-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:12px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:34px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; line-height:1; margin-bottom:12px; }
+  .section-title span { color:var(--blue); }
+  .info-card p, .idea-card p { color:var(--white-dim); line-height:1.6; font-size:15px; }
+  .idea-form { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .idea-form label { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue-light); display:block; margin-bottom:6px; }
+  .idea-form input, .idea-form textarea { width:100%; background:rgba(255,255,255,.05); border:1px solid var(--navy-border); border-radius:8px; color:var(--white); font-family:'Barlow',sans-serif; font-size:15px; padding:12px 13px; outline:none; }
+  .idea-form textarea { min-height:120px; resize:vertical; }
+  .idea-form input:focus, .idea-form textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-glow); }
+  footer { background:var(--navy-mid); border-top:1px solid var(--navy-border); padding:26px 48px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,.42); font-size:13px; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+  .footer-links a { color:var(--white-dim); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .footer-links a:hover { color:var(--blue-light); }
+  @media (max-width:768px) {
+    header { padding:0 20px; } nav { display:none; } .header-logo-img { height:46px; }
+    .game-shell { padding:16px; } .generator-frame { padding:12px; } .generator-panel { padding:18px; }
+    .idea-section { grid-template-columns:1fr; } footer { padding:24px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="../../../index.html" class="logo"><img src="../../../images/axton-logo.png" alt="Axton Enterprises" class="header-logo-img"></a>
+  <nav>
+    <a href="../../../index.html">Home</a>
+    <a href="../../index.html">AE Hub</a>
+    <a href="../index.html" class="active">Games</a>
+    <a href="#submit-idea" class="nav-cta">Submit Idea</a>
+  </nav>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Axton Enterprises Game Lab</div>
+      <h1>🎨 Pictionary <span>Prompt Generator</span></h1>
+      <p>Pick a difficulty, generate a prompt, start the timer, and keep game night moving.</p>
+    </div>
+  </section>
+  <section class="game-section">
+    <div class="game-shell">
+      <div class="game-top">
+        <div>
+          <div class="game-title">Picture Guess Prompt Generator</div>
+          <p class="game-subtitle">Built for Pictionary, charades, and quick party games.</p>
+        </div>
+        <div class="score-box">Game Night Tool</div>
+      </div>
+      <div class="generator-frame">
+        <div class="generator-panel">
+          <div class="section">
+            <label>Select Difficulty:</label>
+            <div class="difficulty-buttons">
+              <button class="difficulty-btn" data-difficulty="easy">Easy</button>
+              <button class="difficulty-btn active" data-difficulty="medium">Medium</button>
+              <button class="difficulty-btn" data-difficulty="hard">Hard</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <label>Timer Duration (seconds):</label>
+            <input type="number" id="timerDuration" value="60" min="10" max="300">
+          </div>
+
+          <div class="section">
+            <button class="generate-btn" id="generateBtn">
+              <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              </svg>
+              Generate Word
+            </button>
+          </div>
+
+          <div class="section">
+            <div class="word-display" id="wordDisplay">
+              <div class="word-label">Your Word:</div>
+              <div class="word" id="word"></div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="timer-display" id="timerDisplay">
+              <div class="timer" id="timer">1:00</div>
+              <div class="timer-controls">
+                <button class="timer-btn play" id="playPauseBtn">
+                  <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                  </svg>
+                  <span id="playPauseText">Start</span>
+                </button>
+                <button class="timer-btn reset" id="resetBtn">
+                  <svg class="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                  </svg>
+                  Reset
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="game-instructions">
+        <p><strong>Generate a word and start drawing.</strong></p>
+        <p>Easy works for kids, Medium is balanced, and Hard is intentionally ridiculous.</p>
+      </div>
+      <div class="game-actions">
+        <button id="shareButton" type="button" class="btn">Share Game</button>
+        <a href="../index.html" class="btn btn-ghost">More Games</a>
+      </div>
+    </div>
+
+    <div class="idea-section" id="submit-idea">
+      <div class="info-card">
+        <div class="section-label">Share Link</div>
+        <h2 class="section-title">Start <span>Game Night</span></h2>
+        <p>Use the Share Game button to send this prompt generator to friends or copy the current page link.</p>
+      </div>
+      <div class="idea-card">
+        <div class="section-label">Game Ideas</div>
+        <h2 class="section-title">Submit a <span>Game Idea</span></h2>
+        <p>Have an idea for the next Axton game? Send the concept and we’ll review it.</p>
+        <form class="idea-form" action="mailto:info@axton.enterprises" method="post" enctype="text/plain">
+          <div><label for="name">Name</label><input id="name" name="Name" type="text" required></div>
+          <div><label for="email">Email</label><input id="email" name="Email" type="email" required></div>
+          <div><label for="idea">Game Idea</label><textarea id="idea" name="Game Idea" required></textarea></div>
+          <button class="btn" type="submit">Send Game Idea</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+<footer>
+  <div>© 2026 Axton Enterprises. All rights reserved.</div>
+  <div class="footer-links"><a href="../../../index.html">Home</a><a href="../../index.html">AE Hub</a><a href="../index.html">Games</a></div>
+</footer>
+<script>
+const prompts = {
+            easy: [
+                'Cat', 'Dog', 'House', 'Tree', 'Sun', 'Moon', 'Star', 'Car', 'Boat', 'Fish',
+                'Bird', 'Apple', 'Flower', 'Book', 'Chair', 'Table', 'Cup', 'Hat', 'Shoe', 'Ball',
+                'Heart', 'Smile', 'Pizza', 'Cake', 'Ice Cream', 'Rainbow', 'Clock', 'Door', 'Window', 'Bed'
+            ],
+            medium: [
+                'Elephant', 'Guitar', 'Telescope', 'Volcano', 'Lighthouse', 'Penguin', 'Cactus', 'Waterfall',
+                'Helicopter', 'Pyramid', 'Astronaut', 'Unicorn', 'Dragon', 'Castle', 'Pirate', 'Robot',
+                'Snowman', 'Tornado', 'Mermaid', 'Dinosaur', 'Rocket', 'Treasure', 'Crown', 'Bridge',
+                'Campfire', 'Scarecrow', 'Sunglasses', 'Backpack', 'Butterfly', 'Saxophone'
+            ],
+            hard: [
+                'Procrastination', 'Democracy', 'Photosynthesis', 'Gravity', 'Evolution', 'Meditation',
+                'Nostalgia', 'Wifi Signal', 'Social Media', 'Climate Change', 'Virtual Reality',
+                'Artificial Intelligence', 'Optical Illusion', 'Supply and Demand', 'The Food Chain',
+                'Déjà Vu', 'Adrenaline Rush', 'Writer\'s Block', 'Murphy\'s Law', 'Binge Watching',
+                'Going Viral', 'Peer Pressure', 'Comfort Zone', 'Breaking the Ice', 'Mixed Signals',
+                'Multitasking', 'Overthinking', 'Conspiracy Theory', 'Culture Shock', 'Plot Twist',
+                'Fake News', 'Echo Chamber', 'Guilty Pleasure', 'Mid-life Crisis', 'Tunnel Vision',
+                'Herd Mentality', 'Reverse Psychology', 'Cognitive Dissonance', 'Stockholm Syndrome',
+                'Imposter Syndrome', 'Analysis Paralysis', 'Schadenfreude', 'Wanderlust', 'Serendipity',
+                'Existential Crisis', 'FOMO', 'Gaslighting', 'Sunk Cost Fallacy', 'Confirmation Bias',
+                'Butterfly Effect', 'Domino Effect', 'Placebo Effect', 'Streisand Effect', 'Mandela Effect',
+                'Catch-22', 'Double Standard', 'Glass Ceiling', 'Red Tape', 'Brain Drain',
+                'Information Overload', 'Digital Detox', 'Doomscrolling', 'Toxic Positivity', 'Virtue Signaling',
+                'Cancel Culture', 'Humble Brag', 'Passive Aggressive', 'Emotional Baggage', 'Guilty Conscience',
+                'Self-fulfilling Prophecy', 'Vicious Circle', 'Silver Lining', 'Double-edged Sword', 'Slippery Slope',
+                'Peter Principle', 'Dunning-Kruger Effect', 'Paradox', 'Irony',
+                'Hypocrite', 'Stereotype', 'Prejudice', 'Discrimination', 'Privilege',
+                'Empathy', 'Sympathy', 'Apathy', 'Amnesia', 'Insomnia',
+                'Claustrophobia', 'Agoraphobia', 'Vertigo', 'Paranoia', 'Euphoria',
+                'Melancholy', 'Anxiety', 'Depression', 'Stress', 'Burnout',
+                'Peer Review', 'Fact Check', 'Propaganda', 'Censorship', 'Freedom of Speech',
+                'Net Neutrality', 'Data Privacy', 'Cybersecurity', 'Identity Theft', 'Catfishing',
+                'Trolling', 'Clickbait', 'Algorithm', 'Cryptocurrency', 'Blockchain',
+                'Cloud Computing', 'Machine Learning', 'Big Data', 'Internet of Things', 'Augmented Reality',
+                'Quantum Physics', 'String Theory', 'Black Hole', 'Parallel Universe', 'Time Travel',
+                'Genetic Engineering', 'Cloning', 'Stem Cells', 'Vaccine', 'Antibiotic Resistance',
+                'Global Warming', 'Carbon Footprint', 'Renewable Energy', 'Fossil Fuels', 'Deforestation',
+                'Extinction', 'Endangered Species', 'Ecosystem', 'Biodiversity', 'Sustainability',
+                'Recession', 'Inflation', 'Stock Market', 'Cryptocurrency Crash', 'Economic Bubble',
+                'Gentrification', 'Urban Sprawl', 'Brain Freeze', 'Muscle Memory', 'Growing Pains',
+                'Identity Crisis', 'Generation Gap', 'Culture War', 'Social Justice', 'Equality',
+                'Diversity', 'Inclusion', 'Microaggression', 'Unconscious Bias', 'Systemic Racism',
+                'Glass Cliff', 'Bamboo Ceiling', 'Sticky Floor', 'Wage Gap', 'Gig Economy',
+                'Work-life Balance', 'Remote Work', 'Zoom Fatigue', 'Quiet Quitting', 'The Great Resignation',
+                'Side Hustle', 'Passive Income', 'Influencer', 'Viral Marketing', 'Brand Loyalty',
+                'Planned Obsolescence', 'Consumerism', 'Minimalism', 'Marie Kondo Effect', 'Impulse Buying',
+                'Retail Therapy', 'Buyer\'s Remorse', 'Window Shopping', 'Bargain Hunting', 'Price War',
+                'Supply Chain', 'Outsourcing', 'Monopoly', 'Patent Troll', 'Intellectual Property',
+                'Copyright Infringement', 'Fair Use', 'Public Domain', 'Creative Commons', 'Open Source',
+                'Crowdfunding', 'Crowdsourcing', 'Viral Challenge', 'Meme Culture',
+                'Woke', 'Politically Correct', 'Dog Whistle', 'Astroturfing', 'Gerrymandering',
+                'Filibuster', 'Lame Duck', 'Swing State', 'Electoral College', 'Checks and Balances',
+                'Separation of Powers', 'Bureaucracy', 'Lobbying', 'Special Interest', 'Grassroots Movement',
+                'Civil Disobedience', 'Peaceful Protest', 'Riot', 'Coup', 'Revolution'
+            ]
+        };
+
+        let difficulty = 'medium';
+        let timeLeft = 60;
+        let timerDuration = 60;
+        let isTimerRunning = false;
+        let timerInterval = null;
+
+        // Elements
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+        const timerDurationInput = document.getElementById('timerDuration');
+        const generateBtn = document.getElementById('generateBtn');
+        const wordDisplay = document.getElementById('wordDisplay');
+        const wordElement = document.getElementById('word');
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerElement = document.getElementById('timer');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playPauseText = document.getElementById('playPauseText');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // Difficulty selection
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                difficultyBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                difficulty = btn.dataset.difficulty;
+            });
+        });
+
+        // Timer duration change
+        timerDurationInput.addEventListener('change', (e) => {
+            const val = parseInt(e.target.value) || 30;
+            timerDuration = val;
+            if (!isTimerRunning) {
+                timeLeft = val;
+                updateTimerDisplay();
+            }
+        });
+
+        // Generate word
+        generateBtn.addEventListener('click', () => {
+            const words = prompts[difficulty];
+            const randomWord = words[Math.floor(Math.random() * words.length)];
+            wordElement.textContent = randomWord;
+            wordDisplay.classList.add('visible');
+            timerDisplay.classList.add('visible');
+            timeLeft = timerDuration;
+            isTimerRunning = true;
+            updateTimerDisplay();
+            startTimer();
+            updatePlayPauseButton();
+        });
+
+        // Play/Pause
+        playPauseBtn.addEventListener('click', () => {
+            isTimerRunning = !isTimerRunning;
+            if (isTimerRunning) {
+                startTimer();
+            } else {
+                stopTimer();
+            }
+            updatePlayPauseButton();
+        });
+
+        // Reset
+        resetBtn.addEventListener('click', () => {
+            timeLeft = timerDuration;
+            isTimerRunning = false;
+            stopTimer();
+            updateTimerDisplay();
+            updatePlayPauseButton();
+        });
+
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                } else {
+                    isTimerRunning = false;
+                    stopTimer();
+                    updatePlayPauseButton();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeLeft / 60);
+            const secs = timeLeft % 60;
+            timerElement.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+            
+            if (timeLeft <= 10) {
+                timerElement.classList.add('warning');
+            } else {
+                timerElement.classList.remove('warning');
+            }
+        }
+
+        function updatePlayPauseButton() {
+            if (isTimerRunning) {
+                playPauseText.textContent = 'Pause';
+                playPauseBtn.querySelector('svg').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+            } else {
+                playPauseText.textContent = 'Start';
+                playPauseBtn.querySelector('svg').innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>';
+            }
+        }
+
+        const shareButton = document.getElementById('shareButton');
+
+        shareButton.addEventListener('click', () => {
+            const text = 'Try the Pictionary Prompt Generator by Axton Enterprises.';
+            const url = window.location.href;
+
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Pictionary Prompt Generator',
+                    text,
+                    url
+                }).catch(() => {});
+            } else if (navigator.clipboard) {
+                navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+                    alert('Generator link copied to clipboard!');
+                }).catch(() => {
+                    alert(`${text} ${url}`);
+                });
+            } else {
+                alert(`${text} ${url}`);
+            }
+        });
+
+</script>
+</body>
+</html>
