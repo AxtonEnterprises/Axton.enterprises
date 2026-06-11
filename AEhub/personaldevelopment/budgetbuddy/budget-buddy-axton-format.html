@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Budget Buddy | Axton Enterprises</title>
+<meta name="description" content="Budget Buddy by Axton Enterprises helps track income, bills, spending, and daily budget limits.">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --navy:#0a0f1e; --navy-mid:#111827; --navy-card:#131c2e; --navy-border:#1e2d47;
+    --blue:#1a6fff; --blue-bright:#2d7fff; --blue-light:#4e9bff; --blue-glow:rgba(26,111,255,0.18);
+    --white:#fff; --white-dim:rgba(255,255,255,0.7); --white-faint:rgba(255,255,255,0.12); --gold:#f0c040;
+  }
+  html, body { background:var(--navy); color:var(--white); font-family:'Barlow',sans-serif; min-height:100vh; overflow-x:hidden; }
+  header { background:rgba(10,15,30,.92); border-bottom:1px solid var(--navy-border); padding:0 48px; display:flex; align-items:center; justify-content:space-between; height:80px; position:sticky; top:0; z-index:100; backdrop-filter:blur(12px); }
+  .logo { display:flex; align-items:center; text-decoration:none; }
+  .header-logo-img { height:58px; width:auto; display:block; object-fit:contain; }
+  nav { display:flex; align-items:center; gap:8px; }
+  nav a { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--white-dim); text-decoration:none; padding:8px 16px; border-radius:6px; transition:.2s; }
+  nav a:hover, nav a.active { color:var(--white); background:var(--white-faint); }
+  .nav-cta { background:var(--blue)!important; color:#fff!important; border-radius:8px!important; padding:10px 20px!important; }
+
+  .hero { position:relative; padding:72px 24px 34px; text-align:center; overflow:hidden; }
+  .hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 70% 20%, rgba(26,111,255,.22), transparent 55%); pointer-events:none; }
+  .hero-inner { position:relative; z-index:1; max-width:900px; margin:0 auto; }
+  .eyebrow { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:16px; }
+  h1 { font-family:'Barlow Condensed',sans-serif; font-size:clamp(46px,7vw,82px); font-weight:900; letter-spacing:.03em; text-transform:uppercase; line-height:.95; margin-bottom:16px; }
+  h1 span { color:var(--blue); }
+  .hero p { color:var(--white-dim); font-size:17px; line-height:1.6; max-width:760px; margin:0 auto; }
+
+  .tool-section { padding:32px 24px 80px; }
+  .tool-shell { max-width:1200px; margin:0 auto; background:var(--navy-card); border:1px solid var(--navy-border); border-radius:20px; padding:26px; box-shadow:0 24px 64px rgba(0,0,0,.45); }
+  .tool-top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:18px; flex-wrap:wrap; }
+  .tool-title { font-family:'Barlow Condensed',sans-serif; font-size:30px; font-weight:900; letter-spacing:.06em; text-transform:uppercase; color:var(--white); }
+  .tool-subtitle { color:var(--white-dim); margin-top:4px; font-size:14px; }
+  .status-box { font-family:'Barlow Condensed',sans-serif; font-size:25px; font-weight:800; color:var(--blue-light); letter-spacing:.05em; }
+  .budget-frame { border:4px solid var(--blue); border-radius:16px; padding:24px; background:linear-gradient(180deg, rgba(26,111,255,.08), rgba(26,111,255,.03)); box-shadow:0 0 0 1px rgba(78,155,255,.35), 0 0 34px rgba(26,111,255,.24); }
+
+  /* Scope the original React/Tailwind app into the Axton frame */
+  .budget-frame #root > div { min-height:0!important; background:transparent!important; padding:0!important; }
+  .budget-frame #root .max-w-4xl { max-width:100%!important; }
+  .budget-frame #root .bg-white.rounded-2xl { border-radius:18px!important; box-shadow:0 18px 50px rgba(0,0,0,.28)!important; }
+  .budget-frame #root h1 { font-family:'Barlow Condensed',sans-serif!important; font-weight:900!important; letter-spacing:.04em!important; text-transform:uppercase!important; line-height:1!important; margin-bottom:0!important; }
+  .budget-frame #root h2 { font-family:'Barlow Condensed',sans-serif!important; font-weight:900!important; letter-spacing:.03em!important; text-transform:uppercase!important; }
+  .budget-frame #root button { font-family:'Barlow Condensed',sans-serif!important; font-weight:800!important; letter-spacing:.08em!important; text-transform:uppercase!important; }
+  .budget-frame #root .bg-indigo-600 { background-color:var(--blue)!important; }
+  .budget-frame #root .hover\:bg-indigo-700:hover { background-color:var(--blue-bright)!important; }
+  .budget-frame #root .text-indigo-600, .budget-frame #root .text-indigo-700 { color:var(--blue)!important; }
+  .budget-frame #root .border-indigo-300 { border-color:rgba(26,111,255,.4)!important; }
+  .budget-frame #root .bg-indigo-50 { background-color:#eef5ff!important; }
+
+  .tool-instructions { margin-top:18px; text-align:center; color:var(--white-dim); line-height:1.55; }
+  .tool-instructions strong { color:var(--white); font-size:18px; }
+  .tool-actions { margin-top:22px; display:flex; justify-content:center; align-items:center; gap:12px; flex-wrap:wrap; }
+  .btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; background:var(--blue); color:#fff; border:0; border-radius:8px; padding:13px 22px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; text-decoration:none; cursor:pointer; transition:.2s; }
+  .btn:hover { background:var(--blue-bright); transform:translateY(-1px); }
+  .btn-ghost { background:transparent; border:1px solid var(--navy-border); color:var(--white); }
+  .btn-ghost:hover { border-color:var(--blue); background:var(--blue-glow); color:var(--white); }
+
+  .info-section { max-width:1200px; margin:28px auto 0; display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+  .info-card, .idea-card { background:var(--navy-card); border:1px solid var(--navy-border); border-radius:18px; padding:28px; }
+  .section-label { font-family:'Barlow Condensed',sans-serif; font-size:11px; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--blue-light); margin-bottom:12px; }
+  .section-title { font-family:'Barlow Condensed',sans-serif; font-size:34px; font-weight:900; letter-spacing:.04em; text-transform:uppercase; line-height:1; margin-bottom:12px; }
+  .section-title span { color:var(--blue); }
+  .info-card p, .idea-card p { color:var(--white-dim); line-height:1.6; font-size:15px; }
+  .idea-form { margin-top:18px; display:flex; flex-direction:column; gap:12px; }
+  .idea-form label { font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--blue-light); display:block; margin-bottom:6px; }
+  .idea-form input, .idea-form textarea { width:100%; background:rgba(255,255,255,.05); border:1px solid var(--navy-border); border-radius:8px; color:var(--white); font-family:'Barlow',sans-serif; font-size:15px; padding:12px 13px; outline:none; }
+  .idea-form textarea { min-height:120px; resize:vertical; }
+  .idea-form input:focus, .idea-form textarea:focus { border-color:var(--blue); box-shadow:0 0 0 3px var(--blue-glow); }
+
+  footer { background:var(--navy-mid); border-top:1px solid var(--navy-border); padding:26px 48px; display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; color:rgba(255,255,255,.42); font-size:13px; }
+  .footer-links { display:flex; gap:20px; flex-wrap:wrap; }
+  .footer-links a { color:var(--white-dim); text-decoration:none; font-family:'Barlow Condensed',sans-serif; font-weight:700; letter-spacing:.1em; text-transform:uppercase; }
+  .footer-links a:hover { color:var(--blue-light); }
+
+  @media (max-width:768px) {
+    header { padding:0 20px; } nav { display:none; } .header-logo-img { height:46px; }
+    .tool-shell { padding:16px; } .budget-frame { padding:12px; }
+    .budget-frame #root .bg-white.rounded-2xl { padding:20px!important; }
+    .info-section { grid-template-columns:1fr; } footer { padding:24px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <a href="../../index.html" class="logo"><img src="../../images/axton-logo.png" alt="Axton Enterprises" class="header-logo-img"></a>
+  <nav>
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">AE Hub</a>
+    <a href="./index.html" class="active">Personal</a>
+    <a href="#submit-idea" class="nav-cta">Submit Idea</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">Axton Enterprises Personal Tools</div>
+      <h1>💲 Budget <span>Buddy</span></h1>
+      <p>A simple budgeting tracker to organize income, bills, upcoming expenses, and recommended daily spending.</p>
+    </div>
+  </section>
+
+  <section class="tool-section">
+    <div class="tool-shell">
+      <div class="tool-top">
+        <div>
+          <div class="tool-title">Daily Budget Tracker</div>
+          <p class="tool-subtitle">Enter your income, bills, and spending to get a daily budget target.</p>
+        </div>
+        <div class="status-box">Personal Finance</div>
+      </div>
+
+      <div class="budget-frame">
+        <div id="root"></div>
+      </div>
+
+      <div class="tool-instructions">
+        <p><strong>Set income, add bills, enter bank history, then use the daily check-in.</strong></p>
+        <p>Budget Buddy works best when you update your current available balance regularly.</p>
+      </div>
+      <div class="tool-actions">
+        <button type="button" class="btn" onclick="shareTool()">Share Tool</button>
+        <a href="./index.html" class="btn btn-ghost">Back to Personal Hub</a>
+      </div>
+    </div>
+
+    <div class="info-section" id="submit-idea">
+      <div class="info-card">
+        <div class="section-label">Tool Notes</div>
+        <h2 class="section-title">Stay <span>On Track</span></h2>
+        <p>This tool gives a practical daily number based on available money, upcoming bills, and days until payday.</p>
+      </div>
+      <div class="idea-card">
+        <div class="section-label">Ideas</div>
+        <h2 class="section-title">Submit a <span>Tool Idea</span></h2>
+        <p>Have an idea for another Axton personal development tool? Send the concept and it can be added to the hub.</p>
+        <form class="idea-form" action="mailto:info@axton.enterprises" method="post" enctype="text/plain">
+          <div><label for="name">Name</label><input id="name" name="Name" type="text" required></div>
+          <div><label for="email">Email</label><input id="email" name="Email" type="email" required></div>
+          <div><label for="idea">Tool Idea</label><textarea id="idea" name="Tool Idea" required></textarea></div>
+          <button class="btn" type="submit">Send Tool Idea</button>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div>© 2026 Axton Enterprises. All rights reserved.</div>
+  <div class="footer-links">
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">AE Hub</a>
+    <a href="./index.html">Personal</a>
+  </div>
+</footer>
+
+<script type="text/babel">
+const { useState, useMemo } = React;
+
+    const DollarSign = () => (
+      <svg className="w-10 h-10 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    );
+
+    const Plus = () => (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+      </svg>
+    );
+
+    const Trash2 = () => (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+      </svg>
+    );
+
+    const Calendar = () => (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+      </svg>
+    );
+
+    const TrendingUp = () => (
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+      </svg>
+    );
+
+    const AlertCircle = () => (
+      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    );
+
+    const BudgetApp = () => {
+      const [step, setStep] = useState(1);
+      const [income, setIncome] = useState({ amount: '', frequency: 'monthly', startDate: '' });
+      const [bills, setBills] = useState([]);
+      const [historicalData, setHistoricalData] = useState([
+        { month: 'Month 1', debits: '', credits: '' },
+        { month: 'Month 2', debits: '', credits: '' },
+        { month: 'Month 3', debits: '', credits: '' }
+      ]);
+      const [currentAvailable, setCurrentAvailable] = useState('');
+      const [todaySpent, setTodaySpent] = useState('');
+
+      const suggestedBills = [
+        'Rent/Mortgage', 'Electric', 'Gas', 'Water', 'Internet', 'Phone',
+        'Streaming Services', 'Car Payment', 'Car Insurance', 'Health Insurance',
+        'Gym Membership', 'Student Loan', 'Credit Card'
+      ];
+
+      const addBill = () => {
+        setBills([...bills, { name: '', amount: '', dueDate: '', frequency: 'monthly' }]);
+      };
+
+      const updateBill = (index, field, value) => {
+        const newBills = [...bills];
+        newBills[index][field] = value;
+        setBills(newBills);
+      };
+
+      const deleteBill = (index) => {
+        setBills(bills.filter((_, i) => i !== index));
+      };
+
+      const updateHistoricalData = (index, field, value) => {
+        const newData = [...historicalData];
+        newData[index][field] = value;
+        setHistoricalData(newData);
+      };
+
+      const calculations = useMemo(() => {
+        const monthlyIncome = parseFloat(income.amount) || 0;
+        const totalBills = bills.reduce((sum, bill) => {
+          const amount = parseFloat(bill.amount) || 0;
+          return sum + (bill.frequency === 'monthly' ? amount : amount / 12);
+        }, 0);
+
+        const avgDebits = historicalData.reduce((sum, month) => 
+          sum + (parseFloat(month.debits) || 0), 0) / 3;
+        
+        const avgCredits = historicalData.reduce((sum, month) => 
+          sum + (parseFloat(month.credits) || 0), 0) / 3;
+
+        const avgAdditionalExpenses = avgDebits - totalBills;
+
+        const today = new Date();
+        const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
+        const dayOfMonth = today.getDate();
+
+        const dailyBudget = (monthlyIncome - totalBills) / daysInMonth;
+
+        const getNextPayday = () => {
+          const startDate = new Date(income.startDate || today);
+          let nextPay = new Date(startDate);
+          
+          const daysDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24));
+          
+          switch(income.frequency) {
+            case 'weekly':
+              nextPay.setDate(startDate.getDate() + Math.ceil(daysDiff / 7) * 7);
+              break;
+            case 'bi-weekly':
+              nextPay.setDate(startDate.getDate() + Math.ceil(daysDiff / 14) * 14);
+              break;
+            case 'semi-monthly':
+              if (today.getDate() < 15) {
+                nextPay = new Date(today.getFullYear(), today.getMonth(), 15);
+              } else {
+                nextPay = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+              }
+              break;
+            case 'monthly':
+              nextPay = new Date(today.getFullYear(), today.getMonth() + 1, startDate.getDate());
+              break;
+          }
+          
+          if (nextPay <= today) {
+            switch(income.frequency) {
+              case 'weekly':
+                nextPay.setDate(nextPay.getDate() + 7);
+                break;
+              case 'bi-weekly':
+                nextPay.setDate(nextPay.getDate() + 14);
+                break;
+              case 'semi-monthly':
+                nextPay = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+                break;
+              case 'monthly':
+                nextPay.setMonth(nextPay.getMonth() + 1);
+                break;
+            }
+          }
+          
+          return nextPay;
+        };
+
+        const nextPayday = getNextPayday();
+        const daysUntilPayday = Math.ceil((nextPayday - today) / (1000 * 60 * 60 * 24));
+
+        const upcomingBills = bills.reduce((sum, bill) => {
+          const dueDate = parseInt(bill.dueDate) || 1;
+          if (dueDate >= dayOfMonth && dueDate <= dayOfMonth + daysUntilPayday) {
+            return sum + (parseFloat(bill.amount) || 0);
+          }
+          return sum;
+        }, 0);
+
+        const available = parseFloat(currentAvailable) || (monthlyIncome - totalBills);
+        const availableAfterBills = available - upcomingBills;
+        const recommendedDaily = daysUntilPayday > 0 ? availableAfterBills / daysUntilPayday : 0;
+        const spentToday = parseFloat(todaySpent) || 0;
+
+        return {
+          monthlyIncome,
+          totalBills,
+          avgAdditionalExpenses,
+          dailyBudget,
+          daysInMonth,
+          daysUntilPayday,
+          upcomingBills,
+          availableAfterBills,
+          recommendedDaily,
+          spentToday
+        };
+      }, [income, bills, historicalData, currentAvailable, todaySpent]);
+
+      const getStatusColor = () => {
+        if (calculations.spentToday > calculations.recommendedDaily * 1.2) return 'text-red-600';
+        if (calculations.spentToday > calculations.recommendedDaily * 0.8) return 'text-yellow-600';
+        return 'text-green-600';
+      };
+
+      return (
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-white rounded-2xl shadow-xl p-8">
+              <div className="flex items-center gap-3 mb-8">
+                <DollarSign />
+                <h1 className="text-3xl font-bold text-gray-800">Daily Budget Tracker</h1>
+              </div>
+
+              {/* Progress Indicator */}
+              <div className="flex justify-between mb-8">
+                {[1, 2, 3, 4, 5].map((s) => (
+                  <div key={s} className="flex-1 flex items-center">
+                    <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+                      s <= step ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-500'
+                    }`}>
+                      {s}
+                    </div>
+                    {s < 5 && <div className={`flex-1 h-1 mx-2 ${s < step ? 'bg-indigo-600' : 'bg-gray-200'}`} />}
+                  </div>
+                ))}
+              </div>
+
+              {/* Step 1: Income Setup */}
+              {step === 1 && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4">Income Setup</h2>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Take-Home Income
+                    </label>
+                    <input
+                      type="number"
+                      value={income.amount}
+                      onChange={(e) => setIncome({...income, amount: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="Enter amount"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Payment Frequency
+                    </label>
+                    <select
+                      value={income.frequency}
+                      onChange={(e) => setIncome({...income, frequency: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    >
+                      <option value="weekly">Weekly</option>
+                      <option value="bi-weekly">Bi-Weekly</option>
+                      <option value="semi-monthly">Semi-Monthly</option>
+                      <option value="monthly">Monthly</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Next Payday (or typical payday)
+                    </label>
+                    <input
+                      type="date"
+                      value={income.startDate}
+                      onChange={(e) => setIncome({...income, startDate: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  <button
+                    onClick={() => setStep(2)}
+                    disabled={!income.amount || !income.startDate}
+                    className="w-full bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                  >
+                    Next: Add Bills
+                  </button>
+                </div>
+              )}
+
+              {/* Step 2: Bills Entry */}
+              {step === 2 && (
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-2xl font-bold text-gray-800">Monthly Bills</h2>
+                    <button
+                      onClick={addBill}
+                      className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition"
+                    >
+                      <Plus />
+                      Add Bill
+                    </button>
+                  </div>
+
+                  <div className="space-y-4 max-h-96 overflow-y-auto">
+                    {bills.map((bill, index) => (
+                      <div key={index} className="border border-gray-200 rounded-lg p-4 space-y-3">
+                        <div className="flex gap-3">
+                          <div className="flex-1">
+                            <input
+                              type="text"
+                              list="bill-suggestions"
+                              value={bill.name}
+                              onChange={(e) => updateBill(index, 'name', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                              placeholder="Bill name"
+                            />
+                          </div>
+                          <button
+                            onClick={() => deleteBill(index)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition"
+                          >
+                            <Trash2 />
+                          </button>
+                        </div>
+                        
+                        <div className="grid grid-cols-3 gap-3">
+                          <input
+                            type="number"
+                            value={bill.amount}
+                            onChange={(e) => updateBill(index, 'amount', e.target.value)}
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            placeholder="Amount"
+                          />
+                          <input
+                            type="number"
+                            value={bill.dueDate}
+                            onChange={(e) => updateBill(index, 'dueDate', e.target.value)}
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            placeholder="Due date (day)"
+                            min="1"
+                            max="31"
+                          />
+                          <select
+                            value={bill.frequency}
+                            onChange={(e) => updateBill(index, 'frequency', e.target.value)}
+                            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                          >
+                            <option value="monthly">Monthly</option>
+                            <option value="annual">Annual</option>
+                          </select>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <datalist id="bill-suggestions">
+                    {suggestedBills.map((suggestion, i) => (
+                      <option key={i} value={suggestion} />
+                    ))}
+                  </datalist>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setStep(1)}
+                      className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
+                    >
+                      Back
+                    </button>
+                    <button
+                      onClick={() => setStep(3)}
+                      className="flex-1 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                    >
+                      Next: Historical Data
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 3: Historical Data */}
+              {step === 3 && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-gray-800">3-Month Bank History</h2>
+                  <p className="text-gray-600">Enter your total debits and credits from your last 3 months</p>
+
+                  <div className="space-y-4">
+                    {historicalData.map((month, index) => (
+                      <div key={index} className="border border-gray-200 rounded-lg p-4">
+                        <h3 className="font-semibold text-gray-700 mb-3">{month.month}</h3>
+                        <div className="grid grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm text-gray-600 mb-1">Total Debits</label>
+                            <input
+                              type="number"
+                              value={month.debits}
+                              onChange={(e) => updateHistoricalData(index, 'debits', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                              placeholder="0.00"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm text-gray-600 mb-1">Total Credits</label>
+                            <input
+                              type="number"
+                              value={month.credits}
+                              onChange={(e) => updateHistoricalData(index, 'credits', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                              placeholder="0.00"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setStep(2)}
+                      className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
+                    >
+                      Back
+                    </button>
+                    <button
+                      onClick={() => setStep(4)}
+                      className="flex-1 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                    >
+                      Next: Summary
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 4: Summary Dashboard */}
+              {step === 4 && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold text-gray-800">Budget Summary</h2>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                      <div className="text-sm text-green-600 font-medium">Monthly Income</div>
+                      <div className="text-2xl font-bold text-green-700">
+                        ${calculations.monthlyIncome.toFixed(2)}
+                      </div>
+                    </div>
+
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                      <div className="text-sm text-red-600 font-medium">Total Bills</div>
+                      <div className="text-2xl font-bold text-red-700">
+                        ${calculations.totalBills.toFixed(2)}
+                      </div>
+                    </div>
+
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                      <div className="text-sm text-yellow-600 font-medium">Avg Additional Expenses</div>
+                      <div className="text-2xl font-bold text-yellow-700">
+                        ${calculations.avgAdditionalExpenses.toFixed(2)}
+                      </div>
+                    </div>
+
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="text-sm text-blue-600 font-medium">Remaining After Bills</div>
+                      <div className="text-2xl font-bold text-blue-700">
+                        ${(calculations.monthlyIncome - calculations.totalBills).toFixed(2)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-indigo-50 border-2 border-indigo-300 rounded-lg p-6">
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp />
+                      <div className="text-sm text-indigo-600 font-medium">Daily Budget Allowance</div>
+                    </div>
+                    <div className="text-3xl font-bold text-indigo-700">
+                      ${calculations.dailyBudget.toFixed(2)}/day
+                    </div>
+                    <div className="text-sm text-indigo-600 mt-1">
+                      Based on {calculations.daysInMonth} days this month
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => setStep(3)}
+                      className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 transition"
+                    >
+                      Back
+                    </button>
+                    <button
+                      onClick={() => {
+                        setCurrentAvailable((calculations.monthlyIncome - calculations.totalBills).toString());
+                        setStep(5);
+                      }}
+                      className="flex-1 bg-indigo-600 text-white py-3 rounded-lg font-semibold hover:bg-indigo-700 transition"
+                    >
+                      Go to Daily Tracker
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Step 5: Daily Budget Screen */}
+              {step === 5 && (
+                <div className="space-y-6">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-2xl font-bold text-gray-800">Daily Check-In</h2>
+                    <button
+                      onClick={() => setStep(4)}
+                      className="text-sm text-indigo-600 hover:text-indigo-700 font-medium"
+                    >
+                      View Summary
+                    </button>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-6 text-white">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Calendar />
+                      <div className="text-sm opacity-90">
+                        {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                      </div>
+                    </div>
+                    <div className="text-sm opacity-90 mb-1">Total Available Now</div>
+                    <input
+                      type="number"
+                      value={currentAvailable}
+                      onChange={(e) => setCurrentAvailable(e.target.value)}
+                      className="w-full bg-white bg-opacity-20 border-2 border-white border-opacity-30 text-white text-3xl font-bold px-4 py-2 rounded-lg placeholder-white placeholder-opacity-50"
+                      placeholder="0.00"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <div className="text-xs text-blue-600 font-medium mb-1">Days Until Payday</div>
+                      <div className="text-3xl font-bold text-blue-700">{calculations.daysUntilPayday}</div>
+                    </div>
+
+                    <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                      <div className="text-xs text-orange-600 font-medium mb-1">Upcoming Bills</div>
+                      <div className="text-3xl font-bold text-orange-700">
+                        ${calculations.upcomingBills.toFixed(0)}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-purple-50 border-2 border-purple-300 rounded-lg p-6">
+                    <div className="text-sm text-purple-600 font-medium mb-2">Available After Bills</div>
+                    <div className="text-4xl font-bold text-purple-700 mb-3">
+                      ${calculations.availableAfterBills.toFixed(2)}
+                    </div>
+                    <div className="flex items-start gap-2 text-sm text-purple-600">
+                      <AlertCircle />
+                      <div>This is what you have left after upcoming bills before your next paycheck</div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 border-2 border-green-300 rounded-lg p-6">
+                    <div className="text-sm text-green-600 font-medium mb-2">Recommended Daily Spend</div>
+                    <div className="text-5xl font-bold text-green-700 mb-1">
+                      ${calculations.recommendedDaily.toFixed(2)}
+                    </div>
+                    <div className="text-sm text-green-600">per day for the next {calculations.daysUntilPayday} days</div>
+                  </div>
+
+                  <div className="border-2 border-gray-200 rounded-lg p-6">
+                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                      How much have you spent today?
+                    </label>
+                    <input
+                      type="number"
+                      value={todaySpent}
+                      onChange={(e) => setTodaySpent(e.target.value)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg text-2xl font-semibold focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      placeholder="0.00"
+                    />
+                    
+                    {todaySpent && (
+                      <div className={`mt-4 p-4 rounded-lg ${
+                        calculations.spentToday > calculations.recommendedDaily * 1.2 
+                          ? 'bg-red-50 border border-red-200' 
+                          : calculations.spentToday > calculations.recommendedDaily * 0.8
+                            ? 'bg-yellow-50 border border-yellow-200'
+                            : 'bg-green-50 border border-green-200'
+                      }`}>
+                        <div className={`text-lg font-bold ${getStatusColor()}`}>
+                          {calculations.spentToday > calculations.recommendedDaily * 1.2
+                            ? '⚠️ Over Budget'
+                            : calculations.spentToday > calculations.recommendedDaily * 0.8
+                              ? '⚡ Approaching Limit'
+                              : '✓ On Track!'}
+                        </div>
+                        <div className="text-sm text-gray-600 mt-1">
+                          ${(calculations.recommendedDaily - calculations.spentToday).toFixed(2)} {calculations.spentToday > calculations.recommendedDaily ? 'over' : 'remaining'}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-600">
+                    <strong>💡 Tip:</strong> Update your "Total Available Now" at the top daily with your actual bank balance to stay accurate!
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    ReactDOM.render(<BudgetApp />, document.getElementById('root'));
+</script>
+<script>
+function shareTool() {
+  const text = 'Try Budget Buddy by Axton Enterprises.';
+  const url = window.location.href;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'Budget Buddy',
+      text,
+      url
+    }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(`${text} ${url}`).then(() => {
+      alert('Tool link copied to clipboard!');
+    }).catch(() => {
+      alert(`${text} ${url}`);
+    });
+  } else {
+    alert(`${text} ${url}`);
+  }
+}
+</script>
+</body>
+</html>
