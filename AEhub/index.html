@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AE Apps Hub | Axton Enterprises</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a0f1e;--mid:#111827;--card:#131c2e;--border:#1e2d47;--blue:#1a6fff;--light:#4e9bff;--white:#fff;--dim:rgba(255,255,255,.7)}
+html{scroll-behavior:smooth}body{background:var(--navy);color:#fff;font-family:Barlow,sans-serif;line-height:1.6}
+header{height:80px;padding:0 48px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(10,15,30,.94);z-index:10}
+.logo{font:900 28px "Barlow Condensed";text-decoration:none;letter-spacing:.06em}.logo span{color:var(--light)}
+nav a{font:700 14px "Barlow Condensed";letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--dim);margin-left:22px}
+.hero{padding:110px 80px 0;background:radial-gradient(circle at 85% 15%,rgba(26,111,255,.2),transparent 35%)}
+.eyebrow,.label{font:700 12px "Barlow Condensed";letter-spacing:.28em;text-transform:uppercase;color:var(--light);margin-bottom:18px}
+h1{font:900 clamp(54px,8vw,98px) "Barlow Condensed";text-transform:uppercase;line-height:.92;margin-bottom:28px}
+h1 .blue,.section-title span{color:var(--blue)}h1 .outline{-webkit-text-stroke:1.5px rgba(255,255,255,.25);color:transparent;display:block}
+.hero p{font-size:18px;color:var(--dim);max-width:600px;margin-bottom:54px}
+.btn{display:inline-block;background:var(--blue);padding:15px 28px;border-radius:8px;text-decoration:none;font:700 15px "Barlow Condensed";letter-spacing:.1em;text-transform:uppercase}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);margin:70px -80px 0;border-top:1px solid var(--border);background:rgba(10,15,30,.65)}
+.stat{padding:25px 40px;border-right:1px solid var(--border);display:flex;gap:18px;align-items:center}.stat:last-child{border:0}
+.num{font:900 40px "Barlow Condensed";color:var(--light)}.stat small{color:var(--dim)}.stat strong{display:block}
+section.content{padding:100px 80px}.apps{background:var(--mid);border-block:1px solid var(--border)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:40px;margin-bottom:60px}.section-title{font:900 clamp(38px,5vw,60px) "Barlow Condensed";text-transform:uppercase;line-height:1}.section-copy{max-width:550px;color:var(--dim)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:24px}
+.card{min-height:300px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:34px 30px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;transition:.25s}
+.card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 20px 48px rgba(26,111,255,.18)}
+.icon{width:58px;height:58px;border-radius:14px;background:rgba(26,111,255,.18);border:1px solid rgba(26,111,255,.3);display:grid;place-items:center;font-size:29px;margin-bottom:24px}
+.card h3{font:800 28px "Barlow Condensed";text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}.card p{font-size:14px;color:var(--dim)}.more{font:700 13px "Barlow Condensed";color:var(--light);letter-spacing:.12em;text-transform:uppercase;margin-top:28px}
+footer{padding:28px 48px;border-top:1px solid var(--border);color:rgba(255,255,255,.45);font-size:12px}
+@media(max-width:800px){header{padding:0 22px}nav{display:none}.hero,section.content{padding-left:24px;padding-right:24px}.stats{margin-left:-24px;margin-right:-24px;grid-template-columns:1fr 1fr}.stat{padding:20px}.section-head{align-items:start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header><a class="logo" href="../index.html">AXTON <span>ENTERPRISES</span></a><nav><a href="#apps">Apps</a><a href="./clients/index.html">Clients</a><a href="https://axton.enterprises/">Axton Enterprises</a></nav></header>
+
+<div class="hero">
+<div class="eyebrow">Free Web Apps & Digital Tools</div>
+<h1>AE Apps<span class="blue">Built to Use.</span><span class="outline">Ready Now.</span></h1>
+<p>Free web apps for work, play, reference, and personal growth — plus client websites and digital projects built by Axton Enterprises.</p>
+<a class="btn" href="#apps">Explore AEhub</a>
+<div class="stats">
+<div class="stat"><div class="num">5</div><small><strong>Hub Categories</strong>Apps, resources & clients</small></div>
+<div class="stat"><div class="num">Free</div><small><strong>Open Access</strong>Use tools without friction</small></div>
+<div class="stat"><div class="num">100%</div><small><strong>Browser-Based</strong>No install required</small></div>
+<div class="stat"><div class="num">AE</div><small><strong>Built In-House</strong>Axton Enterprises</small></div>
+</div>
+</div>
+
+<section class="content apps" id="apps">
+<div class="section-head"><div><div class="label">AEhub</div><div class="section-title">Choose Your<br><span>Category</span></div></div><p class="section-copy">Jump into games, practical business tools, personal development apps, quick-reference resources, or explore client projects built by Axton Enterprises.</p></div>
+<div class="grid">
+<a class="card" href="./games/index.html"><div><div class="icon">🎮</div><h3>Games</h3><p>Fun browser-based games built by Axton Enterprises.</p></div><div class="more">Open Games →</div></a>
+<a class="card" href="./personaldevelopment/index.html"><div><div class="icon">🚀</div><h3>Personal Development</h3><p>Tools for personal growth, planning, and everyday life.</p></div><div class="more">Explore Tools →</div></a>
+<a class="card" href="./businessdevelopment/index.html"><div><div class="icon">📊</div><h3>Business Development</h3><p>Practical apps and tools designed to make business easier.</p></div><div class="more">Open Business Tools →</div></a>
+<a class="card" href="./reference/index.html"><div><div class="icon">📓</div><h3>Reference</h3><p>Quick-reference resources and useful information.</p></div><div class="more">Open Reference →</div></a>
+<a class="card" href="./clients/index.html"><div><div class="icon">🤝</div><h3>Clients</h3><p>Websites and digital solutions developed for Axton Enterprises clients.</p></div><div class="more">View Client Work →</div></a>
+</div>
+</section>
+
+
+<footer>© 2026 Axton Enterprises · AEhub</footer>
+</body>
+</html>
