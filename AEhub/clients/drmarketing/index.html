@@ -502,6 +502,114 @@
     .assess-panel{margin-inline:0;}
     .quiz-option{padding:13px 12px;}
   }
+  /* Axton Enterprises hosted-by footer */
+.ae-host-footer{
+  background:#0a0f1e;
+  color:#fff;
+  border-top:1px solid #1e2d47;
+  padding:30px 24px;
+  font-family:'Inter',sans-serif;
+}
+
+.ae-host-inner{
+  max-width:1180px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+}
+
+.ae-host-brand{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.ae-host-mark{
+  width:46px;
+  height:46px;
+  border-radius:10px;
+  background:#05070d;
+  display:grid;
+  place-items:center;
+  border:1px solid #1e2d47;
+  font-weight:800;
+  font-size:17px;
+  letter-spacing:-.04em;
+}
+
+.ae-host-copy strong{
+  display:block;
+  font-size:14px;
+  letter-spacing:.02em;
+  margin-bottom:2px;
+}
+
+.ae-host-copy span{
+  font-size:12px;
+  color:rgba(255,255,255,.58);
+}
+
+.ae-host-links{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.ae-host-links a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:40px;
+  padding:9px 15px;
+  border-radius:8px;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.04em;
+  transition:.2s;
+}
+
+.ae-projects-link{
+  color:#fff;
+  border:1px solid #1e2d47;
+}
+
+.ae-projects-link:hover{
+  border-color:#2d7fff;
+  background:rgba(26,111,255,.10);
+}
+
+.ae-hub-link{
+  background:#1a6fff;
+  color:#fff !important;
+}
+
+.ae-hub-link:hover{
+  background:#2d7fff;
+  transform:translateY(-1px);
+}
+
+@media(max-width:680px){
+  .ae-host-footer{
+    padding:26px 20px;
+  }
+
+  .ae-host-inner{
+    align-items:flex-start;
+  }
+
+  .ae-host-links{
+    width:100%;
+  }
+
+  .ae-host-links a{
+    flex:1;
+  }
+}
 </style>
 </head>
 <body>
@@ -1175,6 +1283,29 @@
   });
 })();
 </script>
+<footer class="ae-host-footer">
+  <div class="ae-host-inner">
 
+    <div class="ae-host-brand">
+      <div class="ae-host-mark" aria-hidden="true">AE</div>
+
+      <div class="ae-host-copy">
+        <strong>Hosted &amp; developed by Axton Enterprises</strong>
+        <span>Websites, tools, games, and digital projects built by AE.</span>
+      </div>
+    </div>
+
+    <div class="ae-host-links">
+      <a class="ae-projects-link" href="../../index.html">
+        See Our Other Projects
+      </a>
+
+      <a class="ae-hub-link" href="../../index.html">
+        Back to AEHub →
+      </a>
+    </div>
+
+  </div>
+</footer>
 </body>
 </html>
